@@ -1,0 +1,36 @@
+﻿/* Schedule specific styles */
+.fc-event {
+    border: none;
+    padding: 2px 4px;
+    margin: 1px;
+}
+
+    .fc-event .fc-event-main {
+        padding: 2px;
+    }
+
+.fc-daygrid-event {
+    white-space: normal;
+    line-height: 1.2;
+}
+
+.fc-event .badge {
+    font-size: 0.7em;
+    padding: 2px 4px;
+}
+
+/* Responsive calendar */
+@media (max-width: 768px) {
+    #calendar {
+        height: 400px;
+    }
+
+    .fc-toolbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .fc-toolbar-chunk {
+        margin-bottom: 10px;
+    }
+}

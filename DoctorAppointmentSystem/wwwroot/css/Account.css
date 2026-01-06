@@ -1,0 +1,154 @@
+﻿/* Luxury Medical Appointment Login/Register/AccountDenied Styling */
+
+body {
+    background: linear-gradient(135deg, #f0f8ff, #e6f7ff); /* Soft luxury gradient */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 100px; /* Adjust this depending on your header height */
+    padding-bottom: 50px; /* Add bottom padding so card doesn't touch screen edge */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Card Container */
+.card {
+    background: #ffffff;
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 800px;
+    margin: auto; /* Center both vertically and horizontally */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    }
+
+/* Card Header */
+.card-header {
+    background: linear-gradient(90deg, #56cfe1, #4ea8de);
+    color: white;
+    text-align: center;
+    border-radius: 14px 14px 0 0;
+    padding: 20px;
+}
+
+    .card-header h3 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+/* Inputs */
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #d0e3f0;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: #4ea8de;
+        box-shadow: 0 0 8px rgba(78, 168, 222, 0.3);
+    }
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(90deg, #4ea8de, #56cfe1);
+    border: none;
+    border-radius: 25px;
+    padding: 10px;
+    font-size: 1rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #48bfe3, #5ee7df);
+        transform: scale(1.02);
+    }
+
+/* Links */
+a {
+    color: #4ea8de;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #48bfe3;
+        text-decoration: underline;
+    }
+
+/* Remember Me and small text */
+.form-check-label,
+.form-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Page layout fix */
+.account-header {
+    position: fixed; /* stays at top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(135deg, #56cfe1, #4ea8de);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 12px 0;
+    z-index: 1000;
+}
+
+.logo-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.25s ease, filter 0.3s ease;
+}
+
+    .logo-link:hover {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+    }
+
+.header-logo {
+    width: 42px;
+    height: 42px;
+}
+
+.system-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.logo-link:hover .system-name {
+    color: #ff4b4b; /* Crimson hover */
+}
+
+body {
+    padding-top: 64px; /* Prevents content from hiding behind fixed header */
+}
+
+#toggle-password {
+    position: absolute;
+    top: 70%;
+    right: 18px;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #6c757d;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+    #toggle-password:hover {
+        color: #007bff;
+    }

@@ -1,0 +1,184 @@
+﻿.sidebar {
+    background: linear-gradient(180deg, #eaf4fb 0%, #d9eaf7 100%); /* soft blue gradient */
+    color: #2c3e50;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
+    border-right: 1px solid rgba(150, 170, 200, 0.2);
+}
+
+.sidebar-header {
+    padding: 28px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(150, 170, 200, 0.2);
+    background: linear-gradient(135deg, #3a8ef6 0%, #69b1f0 100%);
+    box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.06); /* subtle depth */
+    position: relative;
+}
+
+    .sidebar-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 10%;
+        width: 80%;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.25); /* glossy separator */
+        border-radius: 2px;
+    }
+
+    .sidebar-header .logo {
+        max-width: 140px;
+        margin-bottom: 12px;
+        display: inline-block;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1)); /* subtle shadow for logo */
+    }
+
+    .sidebar-header h4 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+        letter-spacing: 0.8px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3); /* subtle 3D effect */
+    }
+
+        .sidebar-header h4:hover {
+            color: #dfefff;
+            transform: scale(1.06);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+        }
+
+            .sidebar-header h4:hover::after {
+                content: '';
+                display: block;
+                height: 3px;
+                width: 60%;
+                margin: 4px auto 0 auto;
+                background: rgba(255, 255, 255, 0.45);
+                border-radius: 2px;
+            }
+
+.sidebar .nav-link {
+    color: #4a6076;
+    padding: 14px 22px;
+    border-left: 4px solid transparent;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+}
+
+    .sidebar .nav-link i {
+        font-size: 1.1rem;
+        min-width: 20px;
+        text-align: center;
+        color: #3a8ef6;
+    }
+
+    .sidebar .nav-link:hover {
+        background: rgba(58, 142, 246, 0.08);
+        color: #2c3e50;
+        border-left-color: #3a8ef6;
+    }
+
+    .sidebar .nav-link.active {
+        background: rgba(58, 142, 246, 0.12);
+        color: #2c3e50;
+        border-left-color: #3a8ef6;
+        font-weight: 600;
+    }
+
+.main-content {
+    margin-left: 16.66666667%; /* col-md-3 */
+    padding: 20px;
+}
+
+.notification-badge {
+    background: #e74c3c;
+    font-size: 0.7em;
+    margin-left: 6px;
+    border-radius: 10px;
+    padding: 2px 6px;
+}
+
+.sidebar.doctor-sidebar {
+    background: linear-gradient(180deg, #f4faff 0%, #e4f1fb 100%);
+}
+
+.sidebar.patient-sidebar {
+    background: linear-gradient(180deg, #f8fbff 0%, #e8f5fd 100%);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        height: auto;
+        width: 100%;
+        border-right: none;
+        box-shadow: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+.navbar .navbar-brand {
+    font-size: 1.5rem;
+    margin-right: auto;
+}
+
+.navbar.navbar-light.bg-light {
+    background: linear-gradient(135deg, #3a8ef6, #69b1f0); /* Blue luxury gradient */
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); /* subtle shadow */
+    margin-bottom: 20px;
+}
+
+    .navbar.navbar-light.bg-light .navbar-brand {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+
+    .navbar.navbar-light.bg-light .navbar-nav .nav-link {
+        color: #ffffff;
+    }
+
+        .navbar.navbar-light.bg-light .navbar-nav .nav-link:hover {
+            color: #dfefff;
+        }
+
+    .navbar.navbar-light.bg-light .dropdown-menu {
+        border-radius: 8px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .navbar.navbar-light.bg-light .dropdown-item:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: black;
+    }
+
+.navbar .dropdown-menu .dropdown-item {
+    color: #2c3e50;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+    .navbar .dropdown-menu .dropdown-item:hover {
+        color: #000000;
+        background-color: rgba(0, 0, 0, 0.05);
+    }

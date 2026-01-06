@@ -1,0 +1,142 @@
+﻿/* ================================
+   HEADER SECTION
+   ================================ */
+.details-header {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between; /* Spread elements across */
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, #f9fafb, #e5e7eb); /* Subtle background */
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Left Side (Back Button) */
+.details-header-left a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #ffffff;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8); /* Luxury light blue theme */
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .details-header-left a:hover {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(29, 78, 216, 0.6);
+    }
+
+    .details-header-left a i {
+        font-size: 1.1rem;
+    }
+
+/* Right Side (Optional Title or Actions) */
+.details-header-right {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #374151; /* Muted dark gray */
+    opacity: 0.85;
+}
+
+/* ================================
+   DOCTOR CARD
+   ================================ */
+.card img.card-img-top {
+    border-bottom: 1px solid #ddd;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.card-body h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* ================================
+   RATING SECTION
+   ================================ */
+.rating-section {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+
+.rating-input {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+    .rating-input input {
+        display: none;
+    }
+
+    .rating-input label {
+        cursor: pointer;
+        font-size: 1.8rem;
+        color: #ddd;
+        transition: color 0.2s;
+    }
+
+        .rating-input input:checked ~ label,
+        .rating-input label:hover,
+        .rating-input label:hover ~ label {
+            color: #ffc107;
+        }
+
+/* ================================
+   REVIEWS SECTION
+   ================================ */
+.review-item {
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+    .review-item strong {
+        font-weight: 600;
+    }
+
+    .review-item .text-muted {
+        font-size: 0.85rem;
+        color: #6b7280;
+    }
+
+/* ================================
+   BUTTONS
+   ================================ */
+.btn-primary {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+    .btn-primary:hover {
+        background: #004085;
+        transform: translateY(-1px);
+    }
+
+/* ================================
+   ALERTS
+   ================================ */
+.alert {
+    border-radius: 10px;
+    font-size: 0.95rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}

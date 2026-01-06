@@ -1,0 +1,161 @@
+﻿/* wwwroot/css/payment.css
+   Luxury, medical-themed payment page styles
+*/
+
+/* Page wrapper */
+.payment-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+    min-height: calc(100vh - 60px);
+    background: linear-gradient(135deg, #f6faff, #e8f2fb); /* soft luxury blue-white */
+    color: #2c3e50; /* dark slate text */
+}
+
+    /* Card */
+    .payment-wrapper .card {
+        width: 100%;
+        max-width: 560px;
+        border-radius: 16px;
+        box-shadow: 0 12px 30px rgba(60, 90, 130, 0.08);
+        overflow: hidden;
+        border: 1px solid rgba(150, 170, 200, 0.15);
+        background: #ffffff;
+    }
+
+    /* Header (blue theme for payment form) */
+    .payment-wrapper .card-header {
+        padding: 20px;
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        color: #ffffff;
+        background: linear-gradient(135deg, #69b1f0, #3a8ef6); /* luxury light blue */
+        box-shadow: inset 0 -2px 6px rgba(0,0,0,0.1);
+    }
+
+        /* Success header (green gradient for confirmation) */
+        .payment-wrapper .card-header.bg-success {
+            background: linear-gradient(135deg, #5fcf80, #2e8b57);
+        }
+
+    /* Card body */
+    .payment-wrapper .card-body {
+        padding: 24px;
+        background: #ffffff;
+    }
+
+    /* Inputs */
+    .payment-wrapper .form-control {
+        border-radius: 10px;
+        padding: 12px 14px;
+        border: 1px solid #d6deeb;
+        box-shadow: none;
+        font-size: 15px;
+        transition: box-shadow .2s ease, border-color .2s ease;
+    }
+
+        .payment-wrapper .form-control:focus {
+            outline: none;
+            border-color: #69b1f0;
+            box-shadow: 0 6px 16px rgba(105, 177, 240, 0.15);
+        }
+
+    /* Readonly amount field */
+    .payment-wrapper input[readonly] {
+        background: #f0f6fc;
+    }
+
+    /* Input group $ prefix */
+    .payment-wrapper .input-group-text {
+        background: #f5f8fc;
+        border: 1px solid #d6deeb;
+        border-right: 0;
+    }
+
+    /* Pay button */
+    .payment-wrapper .btn-pay {
+        display: inline-block;
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+        .payment-wrapper .btn-pay.btn-primary {
+            background: linear-gradient(135deg,#69b1f0,#3a8ef6);
+            color: #fff;
+            box-shadow: 0 10px 28px rgba(105,177,240,0.2);
+        }
+
+            .payment-wrapper .btn-pay.btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 32px rgba(105,177,240,0.25);
+            }
+
+    /* Confirmation success */
+    .payment-wrapper .payment-success {
+        padding: 28px 12px 32px;
+        text-align: center;
+    }
+
+        .payment-wrapper .payment-success .fa-check-circle {
+            font-size: 4.5rem;
+            color: #2e8b57;
+            margin-bottom: 14px;
+        }
+
+    /* Footer */
+    .payment-wrapper .card-footer {
+        background: #f8fbff;
+        text-align: center;
+        padding: 12px 16px;
+        font-size: .95rem;
+        color: #6c7a89;
+    }
+
+/* Small screens */
+@media (max-width: 576px) {
+    .payment-wrapper {
+        padding: 24px 12px;
+        min-height: auto;
+    }
+
+        .payment-wrapper .card {
+            box-shadow: 0 6px 18px rgba(60, 90, 130, 0.06);
+        }
+
+        .payment-wrapper .card-body {
+            padding: 18px;
+        }
+}
+
+.payment-wrapper .form-row {
+    margin-bottom: 1rem; /* Adds spacing under the row */
+}
+
+.payment-wrapper .input-group-text {
+    background: #f5f8fc;
+    border: 1px solid #d6deeb;
+    border-right: 0;
+    padding: 12px 14px; /* match the input's padding */
+    font-size: 15px; /* match the input's font-size */
+    height: 46px; /* force equal height with input */
+    display: flex;
+    align-items: center; /* vertically center the '$' */
+}
+
+.payment-wrapper .form-control {
+    border-radius: 10px;
+    padding: 12px 14px;
+    height: 46px; /* ensure consistent height with prefix */
+    border: 1px solid #d6deeb;
+    font-size: 15px;
+    transition: box-shadow .2s ease, border-color .2s ease;
+}

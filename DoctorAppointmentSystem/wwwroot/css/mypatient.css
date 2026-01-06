@@ -1,0 +1,114 @@
+﻿/* ===== MyPatient Module Styling ===== */
+
+/* General container */
+.container {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Headings */
+h2 {
+    font-weight: 700;
+    color: #0a3d62;
+    margin-bottom: 20px;
+    border-left: 5px solid #007bff;
+    padding-left: 10px;
+}
+
+/* Tables */
+.patient-table {
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.95rem;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+}
+
+    .patient-table thead {
+        background: linear-gradient(90deg, #007bff, #00c6ff);
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .patient-table tbody tr {
+        transition: all 0.25s ease-in-out;
+    }
+
+        .patient-table tbody tr:hover {
+            background-color: #f0f9ff;
+            transform: scale(1.01);
+        }
+
+    /* Table cells */
+    .patient-table td,
+    .patient-table th {
+        padding: 14px 16px;
+        vertical-align: middle;
+    }
+
+/* Buttons */
+.btn-sm {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-info {
+    background: #00a8ff;
+    border: none;
+    color: #fff;
+}
+
+    .btn-info:hover {
+        background: #0097e6;
+        transform: translateY(-2px);
+    }
+
+.btn-primary {
+    background: #273c75;
+    border: none;
+    color: #fff;
+}
+
+    .btn-primary:hover {
+        background: #192a56;
+        transform: translateY(-2px);
+    }
+
+.btn-secondary {
+    background: #718093;
+    border: none;
+    color: #fff;
+}
+
+    .btn-secondary:hover {
+        background: #636e72;
+        transform: translateY(-2px);
+    }
+
+/* Alerts */
+.alert {
+    border-radius: 8px;
+    font-size: 0.95rem;
+    padding: 12px 16px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

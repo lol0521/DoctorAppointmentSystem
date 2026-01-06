@@ -1,0 +1,95 @@
+﻿.schedule-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9f3fb 100%);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    max-width: 900px;
+    margin: auto;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+    .schedule-container h2 {
+        color: #2c3e50;
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+.schedule-table th, .schedule-table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.5rem;
+    min-width: 50px;
+    transition: background 0.3s;
+}
+
+    .schedule-table td.unavailable {
+        background: #f0f0f0;
+    }
+
+    .schedule-table td.available {
+        background: #28a745;
+        color: white;
+        font-weight: 600;
+        border-radius: 5px;
+    }
+
+    .schedule-container .alert {
+        border-radius: 12px;
+        font-weight: 600;
+        background: #d4edda;
+        color: #155724;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .schedule-container .form-label {
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    .schedule-container .form-control {
+        border-radius: 12px;
+        border: 1px solid #b0c4de;
+        padding: 0.5rem 0.75rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+        .schedule-container .form-control:focus {
+            border-color: #5dade2;
+            box-shadow: 0 0 12px rgba(93, 173, 226, 0.25);
+        }
+
+    .schedule-container .form-check-label {
+        font-size: 0.95rem;
+        color: #5d6d7e;
+    }
+
+    .schedule-container .btn-primary {
+        background: linear-gradient(135deg, #3498db, #2e86c1);
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        width: 100%;
+    }
+
+        .schedule-container .btn-primary:hover {
+            background: linear-gradient(135deg, #2e86c1, #2874a6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+#calendar {
+    margin-top: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.schedule-table th {
+    background: #3498db;
+    color: white;
+}

@@ -1,0 +1,619 @@
+﻿/* ===== Global Reset ===== */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling in both directions */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px; /* Base font size */
+}
+
+/* ===== Fullscreen Video Section ===== */
+.video-section {
+    position: relative;
+    width: 100vw;
+    height: 100vh; /* Ensure section fills the entire viewport */
+    overflow: hidden; /* No internal scroll */
+}
+
+.video-bg { /* Video fills entire background */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.overlay { /* Dark transparent overlay */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+}
+
+.content { /* Centered content */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 1;
+    width: 80%;
+    max-width: 1200px;
+}
+
+    .content h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .content p {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .content .btn {
+        background-color: crimson;
+        color: white;
+        padding: 0.9rem 2.5rem;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-size: 1.2rem;
+    }
+
+        .content .btn:hover {
+            background-color: darkred;
+            transform: scale(1.05);
+        }
+
+
+
+
+
+/* ===== Blurred Header ===== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent white */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+/* ===== Logo stays left ===== */
+.logo-container {
+    position: absolute;
+    left: 20px; /* Stick to left */
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 90px;
+    width: auto;
+}
+
+    .logo-container a img {
+        height: 90px;
+        transition: transform 0.3s ease;
+    }
+
+    .logo-container a:hover img {
+        transform: scale(1.05) rotate(-1deg); /* Slight zoom + tilt */
+    }
+
+
+
+
+.center-nav {
+    position: absolute; /* Take out of flex flow */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+    .center-nav ul {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+        margin: 0;
+        padding: 0;
+    }
+
+        .center-nav ul li a {
+            position: relative;
+            text-decoration: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            transition: color 0.3s ease;
+        }
+
+            .center-nav ul li a::after {
+                content: '';
+                position: absolute;
+                bottom: -3px; /* Underline position */
+                left: 0;
+                height: 2px;
+                width: 0;
+                background: crimson; /* Luxury accent color */
+                transition: width 0.4s ease;
+            }
+
+            .center-nav ul li a:hover {
+                color: crimson; /* Text color on hover */
+            }
+
+            .center-nav ul li a:hover::after {
+    width: 100%; /* Slide underline fully across */
+}
+
+
+
+
+/* ===== Profile Section (Right) ===== */
+.profile-container {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 20px; /* Rounded pill shape */
+    background-color: rgba(255, 255, 255, 0.05); /* Subtle glass background */
+    backdrop-filter: blur(6px); /* Soft blur */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+}
+
+    .profile-container:hover {
+        background-color: rgba(220, 20, 60, 0.1);
+        box-shadow: 0 0 15px rgba(220, 20, 60, 0.3);
+    }
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    color: white !important; /* Default text color */
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+    .profile-link:hover,
+    .profile-link:focus {
+        color: crimson !important; /* Force crimson hover */
+        transform: translateY(-2px);
+    }
+
+.profile-icon {
+    height: 26px;
+    width: 26px;
+    border-radius: 50%; /* Round icon */
+    margin-right: 8px;
+    object-fit: cover;
+    border: 1px solid crimson; /* Thin luxury gold border */
+}
+
+
+
+
+
+/* ===== Slide-In Login Panel ===== */
+.slide-login {
+    position: fixed;
+    top: 0;
+    right: -400px; /* Hidden off screen */
+    width: 400px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    transition: right 0.5s ease;
+    z-index: 100;
+    color: white;
+    padding: 40px 30px;
+}
+
+.slide-login.show {
+    right: 0; /* Slide in */
+}
+
+.close-slide {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2.2rem;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    cursor: pointer;
+}
+
+.slide-login-content {
+    margin-top: 60px;
+}
+
+.slide-login-content h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.slide-login-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.slide-login-content input {
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.slide-login-content input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.slide-login-content button {
+    background: crimson;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.slide-login-content button:hover {
+    background: darkred;
+    transform: scale(1.05);
+}
+
+.slide-login-content p {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.slide-login-content a {
+    color: crimson;
+    text-decoration: none;
+}
+
+.slide-login-content a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+/* Tabs */
+.auth-tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+    .auth-tabs button {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.3s ease, color 0.3s ease;
+    }
+
+        .auth-tabs button.active {
+            border-color: crimson;
+            color: crimson;
+        }
+
+        .auth-tabs button:hover {
+            color: crimson;
+        }
+
+/* Forms */
+.auth-form h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.auth-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form input {
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    background: rgba(255,255,255,0.05);
+    color: white;
+}
+
+    .auth-form input::placeholder {
+        color: rgba(255,255,255,0.6);
+    }
+
+.auth-form button {
+    background: crimson;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+    .auth-form button:hover {
+        background: darkred;
+        transform: scale(1.05);
+    }
+
+
+
+
+.about-video {
+    position: relative; /* ⬅️ VERY IMPORTANT */
+    width: 100%;
+    height: 100vh; /* Make it full screen height */
+    overflow: hidden;
+}
+
+    .about-video .video-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+.about-overlay {
+    position: absolute; /* Cover parent */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35); /* Semi-transparent dark */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 2;
+    padding: 0 20px;
+}
+
+    .about-overlay h1 {
+        font-size: 3rem;
+        color: crimson;
+        margin-bottom: 20px;
+    }
+
+    .about-overlay p {
+        font-size: 1.4rem;
+        color: #ddd;
+        line-height: 1.8;
+    }
+
+.about-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35); /* Semi-transparent black */
+    z-index: 2; /* Over video, under text */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+section.about-video .about-overlay h1,
+section.about-video .about-overlay p {
+    color: white;
+}
+
+.video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1; /* Behind everything else */
+}
+
+
+
+
+.video-section .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Adjust opacity as needed */
+    z-index: 1; /* Must be above video but below text */
+}
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap'); /* Luxury font */
+
+.luxury-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    background: linear-gradient(90deg, #FF2D55, #C21807);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    display: inline-block;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    animation: fadeInUp 1.2s ease-out forwards;
+    opacity: 0;
+}
+
+    .luxury-heading::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -5px;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #FF2D55, #C21807);
+        border-radius: 2px;
+    }
+
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* medical record form controller*/
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.text-danger {
+    color: #dc3545;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+}
+
+/* Make logout button look like center-nav links */
+.center-nav-link-btn {
+    background: none;
+    border: none;
+    color: white; /* Match Home/About Us */
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    transition: color 0.3s ease;
+}
+
+    .center-nav-link-btn::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        height: 2px;
+        width: 0;
+        background: crimson;
+        transition: width 0.4s ease;
+    }
+
+    .center-nav-link-btn:hover {
+        color: crimson;
+    }
+
+        .center-nav-link-btn:hover::after {
+            width: 100%;
+        }
+
+/* Make the login alert very visible over video */
+.login-alert {
+    display: block;
+    color: #ff4757; /* Bright red */
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black behind text */
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 auto 15px auto;
+    width: fit-content;
+    max-width: 90%;
+    animation: shake 0.5s ease;
+}
+
+/* Optional: shake animation when showing alert */
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}

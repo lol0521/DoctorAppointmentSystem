@@ -1,0 +1,95 @@
+﻿/* Global Container */
+.container, .row {
+    margin-top: 20px;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18); /* Stronger shadow for luxury feel */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(145deg, #f5f8fa, #e1e6ed); /* Soft luxurious tint */
+    color: #2c3e50 !important;
+}
+
+    .dashboard-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+    }
+
+    /* Icon Styling */
+    .dashboard-card .card-icon {
+        font-size: 2.2rem;
+        margin-bottom: 8px;
+        color: #3498db;
+    }
+
+/* Stats Numbers */
+.stats-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* Card Text */
+.dashboard-card .card-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #7f8c8d;
+}
+
+/* Section Headers */
+.card-header {
+    border-top-left-radius: 18px !important;
+    border-top-right-radius: 18px !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #5dade2, #2874a6);
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* subtle header shadow */
+}
+
+/* Appointment & Schedule Cards */
+.appointment-card {
+    border-radius: 14px;
+    border: 1px solid #d1d9e6; /* soft frame */
+    background-color: #fdfdfd; /* slight off-white */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06); /* gentle shadow */
+}
+
+    .appointment-card:hover {
+        background: #f1f6fb;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    }
+
+/* Badges */
+.badge {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+/* Muted Text */
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    .dashboard-card {
+        margin-bottom: 20px;
+    }
+
+    .appointment-card {
+        margin-bottom: 16px;
+    }
+}
+
+/* Optional: Add subtle background for the whole dashboard */
+body {
+    background: #f5f7fa; /* soft gray-blue tone for luxury feel */
+}

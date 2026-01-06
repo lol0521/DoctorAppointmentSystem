@@ -1,0 +1,177 @@
+﻿/* Page Heading */
+h2 {
+    font-weight: 700;
+    color: #2c3e50;
+    letter-spacing: 0.5px;
+    margin-right: auto;
+}
+
+/* Book New Appointment Button */
+.btn-primary {
+    background: linear-gradient(135deg, #5dade2, #2874a6);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 10px 18px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-left: auto;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #2874a6, #1b4f72);
+        transform: translateY(-3px);
+    }
+
+/* Tabs */
+.nav-tabs {
+    border-bottom: 2px solid #d1d9e6;
+}
+
+    .nav-tabs .nav-link {
+        font-weight: 600;
+        color: #5f7285;
+        padding: 10px 20px;
+        border-radius: 12px 12px 0 0;
+        transition: all 0.3s ease;
+    }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #5dade2, #2874a6);
+            color: white;
+            border: none;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+/* Appointment Cards */
+.appointment-card {
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #ffffff, #f4f7fb);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+    .appointment-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: linear-gradient(135deg, #5dade2, #2874a6);
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+    .appointment-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+    }
+
+/* Card Titles & Text */
+.card-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #1f2d3d;
+    margin-bottom: 8px;
+}
+
+.card-subtitle {
+    font-size: 0.95rem;
+    color: #6c7a89;
+    margin-bottom: 12px;
+}
+
+.card-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #556070;
+    line-height: 1.5;
+}
+
+/* Badges */
+.badge {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #eaf2f8, #d6eaf8);
+    color: #2874a6;
+}
+
+/* Buttons in Cards */
+.btn-outline-info, .btn-outline-danger {
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 8px 14px;
+}
+
+    .btn-outline-info:hover {
+        background: #5dade2;
+        color: #fff;
+        border-color: #5dade2;
+    }
+
+    .btn-outline-danger:hover {
+        background: #e74c3c;
+        color: #fff;
+        border-color: #e74c3c;
+    }
+
+/* Empty State */
+.text-muted {
+    color: #6c757d !important;
+}
+
+.text-center .fas {
+    color: #c5d3e0;
+}
+
+/* Modal */
+.modal-content {
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #5dade2, #2874a6);
+    color: white;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .appointment-card {
+        margin-bottom: 16px;
+    }
+}
+
+/* Status Badges */
+.badge-pending {
+    background: linear-gradient(135deg, #fff8e1, #ffe082); /* soft yellow */
+    color: #b8860b; /* dark golden */
+    font-weight: 600;
+}
+
+.badge-confirmed {
+    background: linear-gradient(135deg, #d4f5e9, #81c784); /* soft green */
+    color: #1b5e20; /* deep green */
+    font-weight: 600;
+}
+
+.badge-cancelled {
+    background: linear-gradient(135deg, #fdecea, #f28b82); /* soft red */
+    color: #7f1d1d; /* dark red */
+    font-weight: 600;
+}
+
+.badge-completed {
+    background: linear-gradient(135deg, #e3f2fd, #64b5f6); /* light blue */
+    color: #0d47a1; /* deep blue */
+    font-weight: 600;
+}

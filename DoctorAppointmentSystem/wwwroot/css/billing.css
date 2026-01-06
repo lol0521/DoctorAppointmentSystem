@@ -1,0 +1,198 @@
+﻿
+/* ===============================
+   Luxury Medical Billing Theme (Blue Edition)
+   =============================== */
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+/* Global font for billing section */
+.billing-container,
+.billing-container * {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ----- Container ----- */
+.billing-container {
+    background: #f9fbfc;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ----- Title & Divider ----- */
+.billing-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #004d66;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.billing-divider {
+    border: none;
+    height: 3px;
+    background: #0066cc;
+    border-radius: 5px;
+    margin: 10px auto 25px;
+    width: 60%;
+}
+
+/* ----- Alert Box ----- */
+.billing-alert {
+    background: #0066cc;
+    border: 1px solid #005bb5;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* ----- Table Container ----- */
+.billing-table-container {
+    overflow-x: auto;
+}
+
+/* ----- Table ----- */
+.billing-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    border: 1px solid #d0e2e8;
+}
+
+    .billing-table th {
+        background: #0066cc;
+        color: #fff;
+        text-align: center;
+        padding: 14px;
+        font-size: 15px;
+        letter-spacing: 0.5px;
+        border: 1px solid #b2d8d8;
+        text-transform: uppercase;
+    }
+
+    .billing-table td {
+        padding: 12px 15px;
+        text-align: center;
+        font-size: 14px;
+        color: #333;
+        border: 1px solid #d0e2e8;
+    }
+
+    /* Alternating row background */
+    .billing-table tbody tr:nth-child(even) {
+        background-color: #f8fdfd;
+    }
+
+    .billing-table tr:hover {
+        background: #f1f9f9;
+        box-shadow: inset 0 0 8px rgba(0, 109, 119, 0.15);
+        transition: 0.3s ease;
+    }
+
+/* ----- Buttons ----- */
+.btn-pay {
+    display: inline-block;
+    background: #0066cc;
+    color: #fff !important;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    transition: all 0.3s ease;
+}
+
+    .btn-pay:hover {
+        background: #005bb5;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 91, 181, 0.5);
+    }
+
+.btn-cancel {
+    background: #cc0000;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 8px;
+    box-shadow: 0 4px 12px rgba(204, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+    .btn-cancel:hover {
+        background: #b50000;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(181, 0, 0, 0.5);
+    }
+
+/* ----- Status Badges ----- */
+.status-pending,
+.status-paid,
+.status-failed,
+.status-refunded {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+/* Specific Status Colors */
+.status-pending {
+    background: #999999; /* keep gray */
+    color: #fff;
+    font-style: italic; /* waiting confirmation style */
+}
+
+.status-paid {
+    background: #28a745; /* luxury green for success */
+    color: #fff;
+}
+
+.status-failed {
+    background: #dc3545; /* luxury red for failed */
+    color: #fff;
+}
+
+.status-refunded {
+    background: #17a2b8; /* teal/blue for refund */
+    color: #fff;
+}
+
+    /* Hover Glow Effect for Status */
+    .status-pending:hover,
+    .status-paid:hover,
+    .status-failed:hover,
+    .status-refunded:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+/* ----- Responsive ----- */
+@media (max-width: 768px) {
+    .billing-title {
+        font-size: 22px;
+    }
+
+    .billing-table th,
+    .billing-table td {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    .btn-pay, .btn-cancel {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+}
