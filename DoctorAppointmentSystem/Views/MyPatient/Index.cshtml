@@ -1,0 +1,51 @@
+﻿@model IEnumerable<DoctorAppointmentSystem.Models.Patient>
+
+@{
+    ViewData["Title"] = "My Patients";
+    Layout = "~/Views/Shared/_DoctorSidebar.cshtml";
+    @section Styles {
+        <link rel="stylesheet" href="~/css/mypatient.css" />
+    }
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">My Patients</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info shadow-sm">No patients have booked an appointment yet.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table patient-table table-bordered table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Date of Birth</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in Model)
+                    {
+                        <tr>
+                            <td>@patient.Name</td>
+                            <td>@patient.Email</td>
+                            <td>@patient.PhoneNumber</td>
+                            <td>@patient.DateOfBirth.ToShortDateString()</td>
+                            <td class="text-center">
+                                <a asp-action="MedicalRecords" asp-route-id="@patient.Id"
+                                   class="btn btn-info btn-sm shadow-sm">
+                                    View Medical Records
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

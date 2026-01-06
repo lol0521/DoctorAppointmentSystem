@@ -1,0 +1,160 @@
+﻿@model DoctorAppointmentSystem.ViewModels.DoctorDashboardViewModel
+@{
+    ViewData["Title"] = "Doctor Dashboard";
+    Layout = "_DoctorSidebar";
+}
+
+<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-primary text-white">
+            <div class="card-body text-center">
+                <div class="card-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3 class="stats-number">@Model.TotalAppointments</h3>
+                <p class="card-text">Total Appointments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-success text-white">
+            <div class="card-body text-center">
+                <div class="card-icon">
+                    <i class="fas fa-user-injured"></i>
+                </div>
+                <h3 class="stats-number">@Model.TotalPatients</h3>
+                <p class="card-text">Total Patients</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-info text-white">
+            <div class="card-body text-center">
+                <div class="card-icon">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <h3 class="stats-number">@Model.TodayAppointments.Count</h3>
+                <p class="card-text">Today's Appointments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-warning text-white">
+            <div class="card-body text-center">
+                <div class="card-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3 class="stats-number">@Model.TodaySchedule.Count</h3>
+                <p class="card-text">Available Slots Today</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-calendar-day me-2"></i>Today's Appointments</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.TodayAppointments.Any())
+                {
+                    foreach (var appointment in Model.TodayAppointments)
+                    {
+                        <div class="card mb-2 appointment-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">@appointment.Patient?.Name</h6>
+                                        <small class="text-muted">
+											@appointment.AppointmentDate.ToString("MMM dd, yyyy") - @appointment.AppointmentDate.TimeOfDay.ToString(@"hh\:mm")
+                                            
+                                        </small>
+                                        <br>
+                                    </div>
+                                    <span class="badge bg-info">@appointment.Status</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">No appointments scheduled for today</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Upcoming Appointments</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.UpcomingAppointments.Any())
+                {
+                    foreach (var appointment in Model.UpcomingAppointments)
+                    {
+                        <div class="card mb-2 appointment-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">@appointment.Patient?.Name</h6>
+                                        <small class="text-muted">
+                                            @appointment.AppointmentDate.ToString("MMM dd, yyyy") -  @appointment.AppointmentDate.TimeOfDay.ToString(@"hh\:mm")
+                                            
+                                        </small>
+                                        <br>
+                                    </div>
+                                    <span class="badge bg-success">@appointment.Status</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">No upcoming appointments</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Today's Schedule</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.TodaySchedule.Any())
+                {
+                    foreach (var schedule in Model.TodaySchedule)
+                    {
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Available Time Slot</h6>
+                                        <small class="text-muted">
+                                            @schedule.StartTime.ToString(@"hh\:mm") - @schedule.EndTime.ToString(@"hh\:mm")
+                                        </small>
+                                    </div>
+                                    <span class="badge bg-success">Available</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">No available slots for today</p>
+                }
+            </div>
+        </div>
+    </div>

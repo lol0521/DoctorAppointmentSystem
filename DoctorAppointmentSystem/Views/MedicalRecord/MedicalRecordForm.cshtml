@@ -1,0 +1,87 @@
+﻿@model DoctorAppointmentSystem.Models.MedicalRecordViewModel
+
+@{
+    ViewData["Title"] = "Medical Information";
+}
+
+<link rel="stylesheet" href="~/css/MedicalRecord.css" />
+
+<div class="medical-form-container shadow p-4 rounded bg-white">
+    <div class="text-center mb-4">
+        <i class="bi bi-file-earmark-medical-fill display-4 text-primary"></i>
+        <h2 class="mt-2">Medical Information</h2>
+        <p class="text-muted">Please fill in your medical details before proceeding to book an appointment.</p>
+    </div>
+
+    <form asp-action="SubmitMedicalRecord" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="BloodType" class="form-label"></label>
+                <select asp-for="BloodType" class="form-select">
+                    <option value="">Select Blood Type</option>
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                    <option>R</option>
+                </select>
+                <span asp-validation-for="BloodType" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label asp-for="Height" class="form-label"></label>
+                <input asp-for="Height" class="form-control" placeholder="e.g. 175" />
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label asp-for="Weight" class="form-label"></label>
+                <input asp-for="Weight" class="form-control" placeholder="e.g. 70" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Allergies" class="form-label"></label>
+            <textarea asp-for="Allergies" class="form-control" rows="2"></textarea>
+            <span asp-validation-for="Allergies" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CurrentMedications" class="form-label"></label>
+            <textarea asp-for="CurrentMedications" class="form-control" rows="2"></textarea>
+            <span asp-validation-for="CurrentMedications" class="text-danger"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="PastMedicalHistory" class="form-label"></label>
+            <textarea asp-for="PastMedicalHistory" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="PastMedicalHistory" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn-medical btn-medical-back" id="backButton">
+                <i class="bi bi-arrow-left"></i> Back
+            </button>
+            <button type="submit" name="action" value="Continue" class="btn-medical">
+                Continue to Appointment <i class="bi bi-arrow-right-circle ms-2"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("backButton").addEventListener("click", function (e) {
+            e.preventDefault();
+            if (confirm("Are you sure you want to go back? Unsaved changes will be lost.")) {
+                window.location.href = '@Url.Action("Index", "Home")';
+            }
+        });
+    </script>
+}

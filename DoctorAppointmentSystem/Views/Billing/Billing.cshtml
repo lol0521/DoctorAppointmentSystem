@@ -1,0 +1,82 @@
+﻿@model List<DoctorAppointmentSystem.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Billing & Payments";
+    Layout = "~/Views/Shared/_PatientSidebar.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/billing.css" />
+}
+
+<div class="billing-container">
+    <h2 class="billing-title">Pending Payments</h2>
+    <hr class="billing-divider" />
+
+    @if (!Model.Any())
+    {
+        <div class="billing-alert">
+            <span>You have no pending payments.</span>
+        </div>
+    }
+    else
+    {
+        <div class="billing-table-container">
+            <table class="billing-table">
+                <thead>
+                    <tr>
+                        <th>Appointment ID</th>
+                        <th>Doctor</th>
+                        <th>Date & Time</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var appointment in Model)
+                    {
+                        <tr>
+                            <td>@appointment.Id</td>
+                            <td>@appointment.Doctor?.Name</td>
+                            <td>@appointment.AppointmentDate.ToString("MMM dd, yyyy hh:mm tt")</td>
+                            <td>$50.00</td>
+                            <td>
+                                <span class="status-badge status-@appointment.Status.ToLower()">
+                                    @appointment.Status
+                                </span>
+                            </td>
+                            <td>
+                                @if (appointment.Status == "Confirmed")
+                                {
+                                    <a asp-controller="Payment"
+                                       asp-action="Index"
+                                       asp-route-appointmentId="@appointment.Id"
+                                       asp-route-amount="50"
+                                       class="btn-pay">
+                                        Pay Now
+                                    </a>
+                                }
+                                else if (appointment.Status == "Pending")
+                                {
+                                    <span class="status-pending">Waiting for doctor confirmation</span>
+                                }
+
+                                <form asp-controller="Billing"
+                                      asp-action="CancelAppointment"
+                                      asp-route-appointmentId="@appointment.Id"
+                                      method="post"
+                                      style="display:inline;">
+                                    <button type="submit" class="btn-cancel"
+                                            onclick="return confirm('Are you sure you want to cancel this appointment?');">
+                                        Cancel
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

@@ -1,0 +1,168 @@
+﻿@model DoctorAppointmentSystem.ViewModels.PatientDashboardViewModel
+@{
+    ViewData["Title"] = "Patient Dashboard";
+    Layout = "_PatientSidebar";
+}
+
+<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-primary text-white">
+            <div class="card-body text-center">
+                <div class="card-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3 class="stats-number">@Model.TotalAppointments</h3>
+                <p class="card-text">Total Appointments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-success text-white">
+            <div class="card-body text-center">
+                <div class="card-icon">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <h3 class="stats-number">@Model.RecentMedicalRecords.Count</h3>
+                <p class="card-text">Medical Records</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-info text-white">
+            <div class="card-body text-center">
+                <div class="card-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <h3 class="stats-number">@Model.PendingPayments.Count</h3>
+                <p class="card-text">Pending Payments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-warning text-white">
+            <div class="card-body text-center">
+                <div class="card-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="stats-number">@Model.UpcomingAppointments.Count</h3>
+                <p class="card-text">Upcoming Appointments</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Upcoming Appointments</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.UpcomingAppointments.Any())
+                {
+                    foreach (var appointment in Model.UpcomingAppointments)
+                    {
+                        <div class="card mb-2 appointment-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Dr. @appointment.Doctor?.Name</h6>
+                                        <small class="text-muted">
+                                            @appointment.AppointmentDate.ToString("MMM dd, yyyy") -
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">@appointment.Notes</small>
+                                    </div>
+                                    <span class="badge bg-success">@appointment.Status</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">No upcoming appointments</p>
+                    <a asp-controller="MedicalRecord" asp-action="BookNow" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i>Book Appointment
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-file-medical me-2"></i>Recent Medical Records</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.RecentMedicalRecords.Any())
+                {
+                    foreach (var record in Model.RecentMedicalRecords)
+                    {
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Medical Record</h6>
+                                        <small class="text-muted">
+                                            Blood Type: @record.BloodType |
+                                            Height: @record.Height cm |
+                                            Weight: @record.Weight kg
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">@record.CreatedDate.ToString("MMM dd, yyyy")</small>
+                                    </div>
+                                    <span class="badge bg-info">Record</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">No medical records found</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-credit-card me-2"></i>Pending Payments</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.PendingPayments.Any())
+                {
+                    foreach (var payment in Model.PendingPayments)
+                    {
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">@payment.Amount.ToString("C")</h6>
+                                        <small class="text-muted">
+                                            Appointment with Dr. @payment.Appointment?.Doctor?.Name
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">@payment.PaymentDate.ToString("MMM dd, yyyy")</small>
+                                    </div>
+                                    <span class="badge bg-warning">@payment.Status</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">No pending payments</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

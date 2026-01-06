@@ -1,0 +1,60 @@
+﻿@model List<DoctorAppointmentSystem.Models.MedicalRecord>
+@{
+    ViewData["Title"] = "Patient Medical Records";
+    Layout = "~/Views/Shared/_DoctorSidebar.cshtml";
+    @section Styles {
+        <link rel="stylesheet" href="~/css/mypatient.css" />
+    }
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Medical Records</h2>
+    <hr />
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning shadow-sm">
+            No medical records found for this patient.
+        </div>
+        <a asp-action="Index" asp-controller="MyPatient" class="btn btn-secondary mt-3">
+            Back to My Patients
+        </a>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table patient-table table-bordered table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Blood Type</th>
+                        <th>Height</th>
+                        <th>Weight</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var record in Model)
+                    {
+                        <tr>
+                            <td>@record.Patient?.Name</td>
+                            <td>@record.BloodType</td>
+                            <td>@record.Height cm</td>
+                            <td>@record.Weight kg</td>
+                            <td class="text-center">
+                                <a asp-action="RecordDetails" asp-route-id="@record.Id"
+                                   class="btn btn-primary btn-sm shadow-sm">
+                                    View & Edit
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <a asp-action="Index" asp-controller="MyPatient" class="btn btn-secondary mt-3">
+            Back to My Patients
+        </a>
+    }
+</div>

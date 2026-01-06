@@ -1,0 +1,49 @@
+﻿@model DoctorAppointmentSystem.Models.Doctor
+
+@{
+    ViewData["Title"] = "Doctor Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-header">
+    <h1>Doctor Details</h1>
+    <div class="admin-actions">
+        <a asp-action="Doctors" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="@(Model.ProfileImage ?? "/images/default-avatar.png")"
+                     class="rounded-circle mb-3" width="150" height="150" alt="Doctor">
+            </div>
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-3">Name</dt>
+                    <dd class="col-sm-9">@Model.Name</dd>
+
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9">@Model.Email</dd>
+
+                    <dt class="col-sm-3">Phone</dt>
+                    <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+                    <dt class="col-sm-3">Gender</dt>
+                    <dd class="col-sm-9">@Model.Gender</dd>
+
+                    <dt class="col-sm-3">Specialty</dt>
+                    <dd class="col-sm-9">@Model.Specialty</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <a asp-action="EditDoctor" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+    </div>
+</div>

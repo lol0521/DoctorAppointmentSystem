@@ -1,0 +1,129 @@
+﻿@model DoctorAppointmentSystem.ViewModels.DoctorProfileViewModel
+@{
+    Layout = "~/Views/Shared/_DoctorSidebar.cshtml";
+    ViewData["Title"] = "Doctor Profile";
+}
+
+<div class="container mt-4">
+    <hr style="border-top: 2px solid #5dade2; margin-bottom:30px;" />
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card" style="border-radius: 20px; box-shadow: 0 12px 30px rgba(0,0,0,0.12); overflow:hidden; transition:all 0.4s ease;">
+                <div class="card-header" style="background: linear-gradient(135deg, #5dade2, #2874a6); color:white; font-weight:700; font-size:1.25rem; padding:18px 25px; text-align:center;">
+                    Profile Information
+                </div>
+                <div class="card-body">
+                    <form asp-action="Doctor" method="post" enctype="multipart/form-data" id="profile-form">
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Profile Image -->
+                        <div class="text-center mb-4" style="position:relative;">
+                            <div id="drop-area" style="border: 2px dashed #ced4da; border-radius: 20px; padding: 35px; background: rgba(248,249,250,0.9); backdrop-filter: blur(5px); min-height: 220px; display:flex; flex-direction:column; justify-content:center; align-items:center; cursor:pointer;">
+                                <button id="remove-image-btn" type="button" class="btn btn-danger btn-sm" style="display:none; position:absolute; top:10px; right:10px; width:36px; height:36px; border-radius:50%; font-size:20px; line-height:1;">×</button>
+
+                                @if (!string.IsNullOrEmpty(Model.ProfileImage))
+                                {
+                                    <img id="current-profile-image" src="@Model.ProfileImage" class="rounded-circle mb-3" style="width:150px; height:150px; object-fit:cover; border:5px solid white; box-shadow:0 8px 25px rgba(0,0,0,0.25);" alt="Profile">
+                                }
+                                else
+                                {
+                                    <div class="drop-area-text" style="text-align:center; color:#495057;">
+                                        <i class="fas fa-cloud-upload-alt" style="font-size:3rem; margin-bottom:10px; color:#6c757d;"></i>
+                                        <p style="font-weight:500; margin-bottom:5px;">Drag & drop or click to upload</p>
+                                        <small style="color:#6c757d;">JPG, PNG, GIF. Max 2MB</small>
+                                    </div>
+                                }
+                                <input asp-for="NewProfileImage" type="file" id="file-input" accept="image/*" style="display:none;" />
+                            </div>
+                            <h4 class="mt-3" style="font-weight:600;">Dr. @Model.Name</h4>
+                            <p class="text-muted">@Model.Specialty</p>
+                        </div>
+
+                        <!-- Form Fields -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div id="usernameAvailability" class="small mt-1"></div>
+                                <label asp-for="Username" class="form-label"></label>
+                                <input asp-for="Username"
+                                       class="form-control"
+                                       style="border-radius:8px; padding:10px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.08);"
+                                       oninput="this.value = this.value.replace(/\s/g, '')" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                                <small class="text-muted">No spaces allowed in username.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Name" class="form-label"></label>
+                                <input asp-for="Name" class="form-control" style="border-radius:8px; padding:10px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.08);" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="emailAvailability" class="small mt-1"></div>
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" type="email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="phoneAvailability" class="small mt-1"></div>
+                                <label asp-for="PhoneNumber" class="form-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" style="border-radius:8px; padding:10px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.08);" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Specialty" class="form-label"></label>
+                                <select asp-for="Specialty" class="form-select" style="border-radius:8px; padding:10px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.08);">
+                                    <option value="">Select Specialty</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="Emergency Medicine">Emergency Medicine</option>
+                                    <option value="Family Medicine">Family Medicine</option>
+                                    <option value="Internal Medicine">Internal Medicine</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Obstetrics and Gynecology">Obstetrics and Gynecology</option>
+                                    <option value="Ophthalmology">Ophthalmology</option>
+                                    <option value="Orthopedics">Orthopedics</option>
+                                    <option value="Pediatrics">Pediatrics</option>
+                                    <option value="Psychiatry">Psychiatry</option>
+                                    <option value="Surgery">Surgery</option>
+                                    <option value="Urology">Urology</option>
+                                </select>
+                                <span asp-validation-for="Specialty" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Gender" class="form-label"></label>
+                                <select asp-for="Gender" class="form-control" style="border-radius:8px; padding:10px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.08);">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #5dade2, #2874a6); border:none; border-radius:10px; padding:12px 35px; font-weight:600; transition:all 0.3s ease;">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/profile.js" asp-append-version="true"></script>
+    @{
+        Html.RenderPartialAsync("_ValidationScriptsPartial").GetAwaiter().GetResult();
+    }
+}

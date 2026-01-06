@@ -1,0 +1,158 @@
+﻿@model DoctorAppointmentSystem.ViewModels.LoginViewModel
+
+@{
+    Layout = "~/Views/Account/_LayoutAccount.cshtml";
+    ViewData["Title"] = "Login";
+    var isLockedOut = ViewData["IsLockedOut"] as bool? ?? false;
+    var lockoutEndTime = ViewData["LockoutEndTime"] as DateTime?;
+    var lockoutMessage = ViewData["LockoutMessage"] as string;
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-4" style="background: linear-gradient(135deg, #ffffff, #f0f4f8);">
+            <div class="card-header text-center" style="background: linear-gradient(135deg, #2a2f36, #4c5c6b); color: #fff; border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+                <h3 class="mb-0">Welcome Back</h3>
+                <small class="text-light">Sign in to continue</small>
+            </div>
+            <div class="card-body p-4">
+                @if (isLockedOut && lockoutEndTime.HasValue)
+                {
+                    <div class="alert alert-danger text-center" role="alert">
+                        <i class="fas fa-lock me-2"></i>
+                        <strong>Account Temporarily Locked</strong>
+                        <p class="mb-0">@lockoutMessage</p>
+                        <div class="mt-2">
+                            <div class="spinner-border spinner-border-sm text-danger me-2" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <small>Time remaining: <span id="countdown-timer">@Math.Ceiling((lockoutEndTime.Value - DateTime.Now).TotalSeconds)</span> seconds</small>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <form asp-action="Login" method="post" id="login-form">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Username" class="form-label fw-semibold"></label>
+                            <input asp-for="Username" class="form-control rounded-pill px-3 py-2" placeholder="Enter your username" />
+                            <span asp-validation-for="Username" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group mb-3 position-relative password-wrapper">
+                            <label asp-for="Password" class="form-label fw-semibold"></label>
+                            <input asp-for="Password" type="password" class="form-control rounded-pill px-3 py-2 pe-5"
+                                   placeholder="Enter your password" />
+
+                            <!-- Eye toggle button -->
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a asp-action="ForgotPassword" class="text-primary">Forgot your password?</a>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label">Remember me</label>
+                            <small class="form-text text-muted d-block">Stay logged in for 30 days</small>
+                        </div>
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold"
+                                    style="background: linear-gradient(90deg, #0056b3, #0099cc); border: none;">
+                                Login
+                            </button>
+                        </div>
+                        <div class="text-center">
+                            <p class="mb-0">
+                                Don't have an account?
+                                <a asp-action="Register" class="fw-bold" style="color: #007acc;">Register here</a>
+                            </p>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_PasswordToggleScripts")
+
+    @if (isLockedOut && lockoutEndTime.HasValue)
+    {
+        <script>
+            // Countdown timer for lockout period
+            function updateCountdown() {
+                const timerElement = document.getElementById('countdown-timer');
+                let seconds = parseInt(timerElement.textContent);
+
+                if (seconds > 1) {
+                    seconds--;
+                    timerElement.textContent = seconds;
+                    setTimeout(updateCountdown, 1000);
+                } else {
+                    // Reload the page when lockout period is over
+                    location.reload();
+                }
+            }
+
+            // Start the countdown
+            setTimeout(updateCountdown, 1000);
+        </script>
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const togglePassword = document.getElementById('toggle-password');
+            const passwordInput = document.getElementById('password-input');
+            const toggleIcon = document.getElementById('toggle-password-icon');
+
+            togglePassword.addEventListener('click', function () {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                toggleIcon.classList.toggle('fa-eye');
+                toggleIcon.classList.toggle('fa-eye-slash');
+            });
+        });
+    </script>
+
+    <script>
+        // Client-side validation to prevent multiple rapid submissions
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                let isSubmitting = false;
+
+                loginForm.addEventListener('submit', function(e) {
+                    // Basic validation - check if password is empty
+                    const passwordInput = document.getElementById('password-input');
+                    if (!passwordInput.value.trim()) {
+                        e.preventDefault();
+                        // Ensure error message is shown
+                        if (!document.querySelector('[data-valmsg-for="Password"]').textContent) {
+                            document.querySelector('[data-valmsg-for="Password"]').textContent = 'The Password field is required.';
+                        }
+                        return;
+                    }
+
+                    if (isSubmitting) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    isSubmitting = true;
+                    const submitButton = loginForm.querySelector('button[type="submit"]');
+                    if (submitButton) {
+                        submitButton.disabled = true;
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Logging in...';
+                    }
+                });
+            }
+        });
+    </script>
+}

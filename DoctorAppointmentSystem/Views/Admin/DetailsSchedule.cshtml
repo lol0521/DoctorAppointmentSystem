@@ -1,0 +1,48 @@
+﻿@model DoctorAppointmentSystem.Models.DoctorSchedule
+
+@{
+    ViewData["Title"] = "Schedule Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-header">
+    <h1>Schedule Details</h1>
+    <div class="admin-actions">
+        <a asp-action="DoctorSchedule" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Schedule ID</dt>
+            <dd class="col-sm-9">#SC-@Model.Id.ToString("D4")</dd>
+
+            <dt class="col-sm-3">Doctor</dt>
+            <dd class="col-sm-9">@Model.Doctor?.Name</dd>
+
+            <dt class="col-sm-3">Date</dt>
+            <dd class="col-sm-9">@Model.Date.ToString("MMM dd, yyyy")</dd>
+
+            <dt class="col-sm-3">Start Time</dt>
+            <dd class="col-sm-9">@Model.StartTime.ToString(@"hh\:mm")</dd>
+
+            <dt class="col-sm-3">End Time</dt>
+            <dd class="col-sm-9">@Model.EndTime.ToString(@"hh\:mm")</dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">
+                <span class="badge @(Model.IsAvailable ? "bg-success" : "bg-secondary")">
+                    @(Model.IsAvailable ? "Available" : "Unavailable")
+                </span>
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a asp-action="EditSchedule" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+    </div>
+</div>

@@ -1,0 +1,180 @@
+﻿@model DoctorAppointmentSystem.ViewModels.ScheduleViewModel
+@{
+    Layout = "~/Views/Shared/_DoctorSidebar.cshtml";
+    ViewData["Title"] = "Doctor Schedule";
+}
+
+@Html.AntiForgeryToken()
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>My Schedule</h2>
+                <div class="d-flex gap-2">
+                    <a href="@Url.Action("Index", new { date = Model.SelectedDate.AddDays(-1) })"
+                       class="btn btn-outline-primary">
+                        <i class="fas fa-chevron-left"></i> Previous Day
+                    </a>
+                    <span class="btn btn-primary">
+                        @Model.SelectedDate.ToString("dddd, MMMM dd, yyyy")
+                    </span>
+                    <a href="@Url.Action("Index", new { date = Model.SelectedDate.AddDays(1) })"
+                       class="btn btn-outline-primary">
+                        Next Day <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="@Url.Action("Index", new { date = DateTime.Today })"
+                       class="btn btn-outline-secondary">
+                        Today
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Calendar View -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-calendar-alt me-2"></i>Calendar View
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Schedule -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>Daily Appointments - @Model.SelectedDate.ToString("MMM dd")
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Appointments.Any())
+                    {
+                        foreach (var appointment in Model.Appointments)
+                        {
+                            var endTime = appointment.AppointmentDate.AddMinutes(appointment.Duration);
+                            <div class="card mb-2 appointment-card border-start"
+                                 style="border-left-color: @GetStatusColor(appointment.Status)!important;">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">@appointment.Patient?.Name</h6>
+                                            <small class="text-muted">
+                                                @appointment.AppointmentDate.ToString("hh:mm tt") -
+                                                @endTime.ToString("hh:mm tt")
+                                                (@appointment.Duration mins)
+                                            </small>
+                                            <br>
+                                            <small class="text-muted">@appointment.Notes</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge" style="background-color: @GetStatusColor(appointment.Status)">
+                                                @appointment.Status
+                                            </span>
+                                            <div class="btn-group btn-group-sm mt-1">
+                                                <button class="btn btn-outline-primary"
+                                                        onclick="viewAppointment(@appointment.Id)">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-outline-success"
+                                                        onclick="updateAppointmentStatus(@appointment.Id, 'Confirmed')">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger"
+                                                        onclick="updateAppointmentStatus(@appointment.Id, 'Cancelled')">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-calendar-times fa-3x mb-3"></i>
+                            <p>No appointments scheduled for today</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Schedule Statistics -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>Daily Statistics
+                    </h6>
+                </div>
+                <div class="card-body">
+                    @{
+                        var confirmed = Model.Appointments.Count(a => a.Status == "Confirmed");
+                        var pending = Model.Appointments.Count(a => a.Status == "Pending");
+                        var completed = Model.Appointments.Count(a => a.Status == "Completed");
+                        var cancelled = Model.Appointments.Count(a => a.Status == "Cancelled");
+                    }
+                    <div class="row text-center">
+                        <div class="col-3">
+                            <div class="text-primary">
+                                <h4>@Model.Appointments.Count</h4>
+                                <small>Total</small>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-success">
+                                <h4>@confirmed</h4>
+                                <small>Confirmed</small>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-warning">
+                                <h4>@pending</h4>
+                                <small>Pending</small>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-danger">
+                                <h4>@cancelled</h4>
+                                <small>Cancelled</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <link href="~/css/doctorschedule.css" rel="stylesheet" />
+}
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<script src="~/js/DoctorSchedule.js"></script>
+@functions {
+    public string GetStatusColor(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "confirmed" => "#28a745",
+            "completed" => "#17a2b8",
+            "cancelled" => "#dc3545",
+            "pending" => "#ffc107",
+            _ => "#007bff"
+        };
+    }
+}
+
+}

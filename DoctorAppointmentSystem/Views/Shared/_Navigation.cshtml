@@ -1,0 +1,67 @@
+﻿<nav class="admin-nav">
+    <div class="nav-header">
+        <h4>Doctor Appointment</h4>
+        <p>Admin Panel</p>
+    </div>
+
+    <ul class="nav-links">
+        <li>
+            <a asp-controller="Admin" asp-action="Dashboard" class="nav-link">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Doctors" class="nav-link">
+                <i class="bi bi-person-badge"></i>
+                <span>Doctors</span>
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Patients" class="nav-link">
+                <i class="bi bi-people"></i>
+                <span>Patients</span>
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Appointments" class="nav-link">
+                <i class="bi bi-calendar-check"></i>
+                <span>Appointments</span>
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="DoctorSchedule" class="nav-link">
+                <i class="bi bi-calendar-week"></i>
+                <span>Schedules</span>
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="MedicalRecords" class="nav-link">
+                <i class="bi bi-file-earmark-medical"></i>
+                <span>Medical Records</span>
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Payments" class="nav-link">
+                <i class="bi bi-credit-card"></i>
+                <span>Payments</span>
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Reviews" class="nav-link">
+                <i class="bi bi-star"></i>
+                <span>Reviews</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="nav-footer">
+        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="nav-link logout-link">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Log Out</span>
+            </button>
+        </form>
+    </div>
+</nav>

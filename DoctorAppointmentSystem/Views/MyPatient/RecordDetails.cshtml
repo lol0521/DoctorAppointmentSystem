@@ -1,0 +1,33 @@
+﻿@model DoctorAppointmentSystem.Models.MedicalRecord
+@{
+    @section Styles {
+        <link rel="stylesheet" href="~/css/mypatient.css" />
+    }
+    ViewData["Title"] = "Medical Record Detail";
+    Layout = "~/Views/Shared/_DoctorSidebar.cshtml";
+}
+
+<h2>Medical Record for @Model.Patient?.Name</h2>
+<hr />
+
+<form asp-action="EditSimulate" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Allergies" class="form-label"></label>
+        <textarea asp-for="Allergies" class="form-control" rows="2"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CurrentMedications" class="form-label"></label>
+        <textarea asp-for="CurrentMedications" class="form-control" rows="2"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PastMedicalHistory" class="form-label"></label>
+        <textarea asp-for="PastMedicalHistory" class="form-control" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Simulate Update</button>
+    <a asp-action="MedicalRecords" asp-route-id="@Model.PatientId" class="btn btn-secondary">Back</a>
+</form>

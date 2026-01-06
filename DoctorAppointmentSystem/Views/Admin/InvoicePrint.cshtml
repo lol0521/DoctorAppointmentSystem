@@ -1,0 +1,229 @@
+﻿@model DoctorAppointmentSystem.ViewModels.PaymentInvoiceViewModel
+
+@{
+    ViewData["Title"] = "Payment Invoice - Print";
+    Layout = null; // No layout for printing
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice - @Model.TransactionId</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white !important;
+            color: black !important;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+        }
+
+        .invoice-header {
+            border-bottom: 2px solid #0d6efd;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .table th {
+            background-color: #f8f9fa !important;
+            font-weight: 600;
+        }
+
+        .badge {
+            font-size: 0.75em;
+        }
+
+        .text-primary {
+            color: #0d6efd !important;
+        }
+
+        .border-top {
+            border-top: 1px solid #dee2e6;
+        }
+
+        .watermark {
+            opacity: 0.1;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 6em;
+            color: #0d6efd;
+            z-index: -1;
+        }
+
+        @@media print {
+            .watermark {
+                display: block;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                margin: 0;
+                padding: 15px;
+            }
+
+            .invoice-container {
+                padding: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="watermark no-print">@Model.ClinicName</div>
+
+    <div class="invoice-container">
+        <!-- Header -->
+        <div class="row invoice-header">
+            <div class="col-md-6">
+                <h3 class="text-primary">@Model.ClinicName</h3>
+                <p class="mb-1">@Model.ClinicAddress</p>
+                <p class="mb-1">@Model.ClinicCity</p>
+                <p class="mb-1">Phone: @Model.ClinicPhone</p>
+                <p class="mb-0">Email: @Model.ClinicEmail</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <h4 class="text-primary">TAX INVOICE</h4>
+                <p class="mb-1"><strong>Invoice #:</strong> @Model.TransactionId</p>
+                <p class="mb-1"><strong>Date:</strong> @Model.FormattedPaymentDate</p>
+                <p class="mb-0">
+                    <strong>Status:</strong>
+                    <span class="badge @(Model.Status == "Paid" ? "bg-success" : "bg-warning")">
+                        @Model.Status
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Client and Appointment Info -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h6 class="text-primary">BILL TO:</h6>
+                <p class="mb-1"><strong>@Model.PatientName</strong></p>
+                <p class="mb-1">Email: @Model.PatientEmail</p>
+                <p class="mb-0">Phone: @Model.PatientPhone</p>
+            </div>
+            <div class="col-md-6">
+                <h6 class="text-primary">APPOINTMENT DETAILS:</h6>
+                <p class="mb-1"><strong>Doctor:</strong> Dr. @Model.DoctorName</p>
+                <p class="mb-1"><strong>Specialty:</strong> @Model.DoctorSpecialty</p>
+                <p class="mb-1"><strong>Date & Time:</strong> @Model.FormattedAppointmentDate</p>
+                <p class="mb-0"><strong>Appointment ID:</strong> AP-@Model.AppointmentId.ToString("D4")</p>
+            </div>
+        </div>
+
+        <!-- Invoice Items -->
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Description</th>
+                        <th class="text-end">Amount (RM)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong>Medical Consultation Fee</strong><br>
+                            <small>Doctor: Dr. @Model.DoctorName</small><br>
+                            <small>Specialty: @Model.DoctorSpecialty</small><br>
+                            <small>Date: @Model.FormattedAppointmentDate</small>
+                            @if (!string.IsNullOrEmpty(Model.AppointmentNotes))
+                            {
+                                <br>
+                                <small><strong>Notes:</strong> @Model.AppointmentNotes</small>
+                            }
+                        </td>
+                        <td class="text-end align-middle">@Model.FormattedAmount</td>
+                    </tr>
+                    <tr class="table-active">
+                        <td class="text-end"><strong>TOTAL AMOUNT:</strong></td>
+                        <td class="text-end"><strong>@Model.FormattedAmount</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payment Details -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h6 class="text-primary">PAYMENT INFORMATION:</h6>
+                <p class="mb-1"><strong>Payment Method:</strong> @Model.PaymentMethod</p>
+                <p class="mb-1"><strong>Payment Date:</strong> @Model.FormattedPaymentDate</p>
+                <p class="mb-0"><strong>Transaction Reference:</strong> @Model.TransactionId</p>
+            </div>
+            <div class="col-md-6">
+                <h6 class="text-primary">SERVICE PROVIDER:</h6>
+                <p class="mb-1"><strong>Dr. @Model.DoctorName</strong></p>
+                <p class="mb-1">@Model.DoctorSpecialty</p>
+                <p class="mb-1">Phone: @Model.DoctorPhone</p>
+                <p class="mb-0">Email: @Model.DoctorEmail</p>
+            </div>
+        </div>
+
+        <!-- Terms and Footer -->
+        <div class="border-top pt-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="text-primary">PAYMENT TERMS:</h6>
+                    <ul class="small">
+                        <li>Payment due upon receipt</li>
+                        <li>This is an official tax invoice</li>
+                        <li>Valid for accounting purposes</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-1"><strong>@Model.ClinicName</strong></p>
+                    <p class="mb-1">Authorized Signature</p>
+                    <div class="signature-line" style="border-top: 1px solid black; width: 200px; margin-left: auto; margin-top: 40px;"></div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <p class="small text-muted">
+                    Thank you for choosing @Model.ClinicName for your healthcare needs.<br>
+                    For any inquiries, please contact: @Model.ClinicPhone | @Model.ClinicEmail
+                </p>
+            </div>
+        </div>
+
+        <!-- Print Button (visible only when not printing) -->
+        <div class="text-center mt-4 no-print">
+            <button onclick="window.print()" class="btn btn-primary me-2">
+                <i class="bi bi-printer"></i> Print Invoice
+            </button>
+            <a asp-action="Payments" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Payments
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Auto-print when the print view loads
+        window.onload = function() {
+            // Check if this is the print view
+            if (window.location.search.includes('print=true')) {
+                window.print();
+            }
+        };
+
+        // After printing, close the window if desired
+        window.onafterprint = function() {
+            // window.close();
+        };
+    </script>
+</body>
+</html>

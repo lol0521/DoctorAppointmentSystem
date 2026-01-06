@@ -1,0 +1,145 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+
+    // Show full header on Home/Index, Home/About, and Doctor pages
+    bool showHeader =
+        (currentController == "Home" &&
+        (currentAction == "Index" || currentAction == "About"))
+        || (currentController == "Doctor" && currentAction != "Details");
+
+    bool isAuthPage = currentController == "Account"; // minimal header for Account pages
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DoctorAppointmentSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DoctorAppointmentSystem.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home.css" />
+    @RenderSection("Styles", required: false)
+    @if (isAuthPage)
+    {
+        <link rel="stylesheet" href="~/css/Account.css" />
+    }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="~/css/simple-chat.css" asp-append-version="true" />
+</head>
+
+<body>
+    @if (showHeader)
+    {
+        <!-- header -->
+        <header class="header">
+            <div class="logo-container">
+                <a href="~/">
+                    <img src="~/images/logo.png" alt="Logo" class="logo">
+                </a>
+            </div>
+
+            <nav class="center-nav">
+                <ul>
+                    <li><a href="~/">Home</a></li>
+                    <li><a asp-controller="Doctor" asp-action="Index">Doctors</a></li> <!-- Add this line -->
+                    <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("Doctor"))
+                        {
+                            <li>
+                                <a asp-controller="Profile" asp-action="Doctor" class="luxury-link">Doctor Profile</a>
+                            </li>
+                        }
+                        else if (User.IsInRole("Patient"))
+                        {
+                            <li>
+                                <a asp-controller="Profile" asp-action="Patient" class="luxury-link">Patient Profile</a>
+                            </li>
+                        }
+                        <!-- Logout if logged in -->
+                        <li>
+                            <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
+                                <button type="submit" class="center-nav-link-btn">Logout</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a asp-controller="Account" asp-action="Login" class="luxury-link">Login/Register</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
+            <div class="profile-container">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    var profileImage = User.FindFirst("ProfileImage")?.Value;
+                    var displayName = User.FindFirst("DisplayName")?.Value;
+
+                    <a href="#" class="profile-link">
+                        @if (!string.IsNullOrEmpty(profileImage))
+                        {
+                            <img src="@profileImage" class="profile-icon" alt="Profile" />
+                        }
+                        else
+                        {
+                            <img src="~/images/profile-icon.png" class="profile-icon" alt="Profile" />
+                        }
+                        <span class="navbar-text ms-2">
+                            Welcome, @displayName
+                        </span>
+                    </a>
+                }
+            </div>
+        </header>
+    }
+    else if (isAuthPage)
+    {
+        <header class="py-3 text-center">
+            <a href="/" class="text-decoration-none">
+                <h4>Doctor Appointment System</h4>
+            </a>
+        </header>
+    }
+
+    <main role="main" class="@(isAuthPage ? "container" : "")">
+        @RenderBody()
+    </main>
+
+    <div id="chatContainer">
+        <!-- Chat Icon -->
+        <div id="chatIcon" onclick="toggleChat()">
+            <i class="bi bi-chat-dots"></i>
+        </div>
+
+        <!-- Chat Box -->
+        <div id="chatBox" class="hidden">
+            <div class="chat-header">
+                <h6>Live Chat Support</h6>
+                <button onclick="toggleChat()" class="btn-close btn-close-white"></button>
+            </div>
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type your message..." />
+                <button onclick="sendMessage()" class="btn btn-primary btn-sm">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="~/js/simple-chat.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

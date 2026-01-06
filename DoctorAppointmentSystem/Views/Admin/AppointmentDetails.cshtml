@@ -1,0 +1,61 @@
+﻿@model DoctorAppointmentSystem.Models.Appointment
+
+@{
+    ViewData["Title"] = "Appointment Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-header">
+    <h1>Appointment Details</h1>
+    <div class="admin-actions">
+        <a asp-action="Appointments" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Appointment ID</dt>
+            <dd class="col-sm-9">#AP-@Model.Id.ToString("D4")</dd>
+
+            <dt class="col-sm-3">Patient</dt>
+            <dd class="col-sm-9">
+                <div class="d-flex align-items-center">
+                    <img src="@(Model.Patient?.ProfileImage ?? "/images/default-avatar.png")"
+                         class="rounded-circle me-2" width="40" height="40">
+                    @Model.Patient?.Name
+                </div>
+            </dd>
+
+            <dt class="col-sm-3">Doctor</dt>
+            <dd class="col-sm-9">
+                <div class="d-flex align-items-center">
+                    <img src="@(Model.Doctor?.ProfileImage ?? "/images/default-avatar.png")"
+                         class="rounded-circle me-2" width="40" height="40">
+                    @Model.Doctor?.Name (@Model.Doctor?.Specialty)
+                </div>
+            </dd>
+
+            <dt class="col-sm-3">Date & Time</dt>
+            <dd class="col-sm-9">@Model.AppointmentDate.ToString("f")</dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">
+                <span class="badge @(Model.Status == "Confirmed" ? "bg-success" :
+                                                          Model.Status == "Pending" ? "bg-warning" : "bg-secondary")">
+                    @Model.Status
+                </span>
+            </dd>
+
+            <dt class="col-sm-3">Notes</dt>
+            <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Notes) ? "No notes" : Model.Notes)</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a asp-action="EditAppointment" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+    </div>
+</div>

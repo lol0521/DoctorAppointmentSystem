@@ -1,0 +1,131 @@
+﻿@model IEnumerable<DoctorAppointmentSystem.Models.DoctorSchedule>
+
+@{
+    ViewData["Title"] = "Doctor Schedules";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="admin-header">
+    <h1>Doctor Schedules</h1>
+    <div class="admin-actions">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <select id="doctorFilter" class="form-select">
+                    <option value="">All Doctors</option>
+                    @if (ViewBag.Doctors != null)
+                    {
+                        foreach (var doctor in ViewBag.Doctors as List<Doctor>)
+                        {
+                            <option value="@doctor.Id">@doctor.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select id="dateRangeFilter" class="form-select">
+                    <option value="">All Dates</option>
+                    <option value="Today">Today</option>
+                    <option value="ThisWeek">This Week</option>
+                    <option value="ThisMonth">This Month</option>
+                    <option value="Upcoming">Upcoming</option>
+                    <option value="NextMonth">Next Month</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select id="availabilityFilter" class="form-select">
+                    <option value="">All</option>
+                    <option value="true">Available</option>
+                    <option value="false">Unavailable</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select id="viewTypeSelect" class="form-select">
+                    <option value="list">List View</option>
+                    <option value="calendar">Calendar View</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button id="applyFilters" class="btn btn-primary w-100">
+                    <i class="bi bi-funnel"></i> Apply Filters
+                </button>
+            </div>
+            <div class="col-md-12 mt-2">
+                <button id="clearFilters" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-x-circle"></i> Clear Filters
+                </button>
+
+                <!-- View Type Toggle Buttons -->
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary view-type-btn active" data-viewtype="list">
+                        <i class="bi bi-list"></i> List View
+                    </button>
+                    <button type="button" class="btn btn-outline-primary view-type-btn" data-viewtype="calendar">
+                        <i class="bi bi-calendar"></i> Calendar View
+                    </button>
+                </div>
+
+                <a asp-action="CreateSchedule" class="btn btn-success float-end">
+                    <i class="bi bi-plus-circle"></i> New Schedule
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="card-body">
+        <!-- Sorting Controls (only show in list view) -->
+        <div class="d-flex justify-content-between align-items-center mb-3" id="sortingControls">
+            <div class="sort-controls">
+                <span class="me-2">Sort by:</span>
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="id" data-sortorder="asc">
+                        ID <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="doctor" data-sortorder="asc">
+                        Doctor <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="date" data-sortorder="asc">
+                        Date <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="starttime" data-sortorder="asc">
+                        Start Time <i class="bi bi-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="page-size-control">
+                <span class="me-2">Show:</span>
+                <select class="form-select form-select-sm d-inline-block" id="pageSize" style="width: 80px;">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="schedulesTableContainer" data-url="@Url.Action("GetDoctorSchedulesAjax", "Admin")">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Loading schedules...</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Schedules pagination" class="mt-3">
+            <ul class="pagination justify-content-center" id="pagination">
+            </ul>
+        </nav>
+    </div>
+</div>

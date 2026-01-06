@@ -1,0 +1,122 @@
+﻿@model IEnumerable<DoctorAppointmentSystem.Models.Payment>
+
+@{
+    ViewData["Title"] = "Payments Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-header">
+    <h1>Payments</h1>
+    <div class="admin-actions">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <select id="statusFilter" class="form-select">
+                    <option value="">All Statuses</option>
+                    @if (ViewBag.Statuses != null)
+                    {
+                        foreach (var status in ViewBag.Statuses as List<string>)
+                        {
+                            <option value="@status">@status</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="methodFilter" class="form-select">
+                    <option value="">All Methods</option>
+                    @if (ViewBag.PaymentMethods != null)
+                    {
+                        foreach (var method in ViewBag.PaymentMethods as List<string>)
+                        {
+                            <option value="@method">@method</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="dateRangeFilter" class="form-select">
+                    <option value="">All Dates</option>
+                    <option value="Today">Today</option>
+                    <option value="ThisWeek">This Week</option>
+                    <option value="ThisMonth">This Month</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button id="applyFilters" class="btn btn-primary">
+                    <i class="bi bi-funnel"></i> Apply
+                </button>
+                <button id="clearFilters" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle"></i> Clear
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="card-body">
+        <!-- Sorting Controls -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="sort-controls">
+                <span class="me-2">Sort by:</span>
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="id" data-sortorder="asc">
+                        ID <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="patient" data-sortorder="asc">
+                        Patient <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="date" data-sortorder="desc">
+                        Date <i class="bi bi-arrow-down"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="amount" data-sortorder="desc">
+                        Amount <i class="bi bi-arrow-down"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="method" data-sortorder="asc">
+                        Method <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm sort-btn" data-sortby="status" data-sortorder="asc">
+                        Status <i class="bi bi-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="page-size-control">
+                <span class="me-2">Show:</span>
+                <select class="form-select form-select-sm d-inline-block" id="pageSize" style="width: 80px;">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="paymentsTableContainer" data-url="@Url.Action("GetPaymentsAjax", "Admin")">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Loading payments...</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Payments pagination" class="mt-3">
+            <ul class="pagination justify-content-center" id="pagination">
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#applyFilters').click(function () {
+            });
+
+            $('#clearFilters').click(function () {
+            });
+        });
+    </script>
+}

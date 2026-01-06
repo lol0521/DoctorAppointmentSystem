@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Home - Appointment System";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // Check login status
+    bool isLoggedIn = User.Identity.IsAuthenticated;
+}
+
+<script>
+    function toggleMenu() {
+        const sideMenu = document.getElementById('sideMenu');
+        if (sideMenu.style.left === '0%') {
+            sideMenu.style.left = '-100%';
+        } else {
+            sideMenu.style.left = '0%';
+        }
+    }
+
+    function checkLogin(e) {
+        // Render Razor variables as JS literals
+        var isLoggedIn = @(isLoggedIn.ToString().ToLower()); // true or false
+        var isDoctor = @(User.IsInRole("Doctor").ToString().ToLower()); // true if doctor
+
+        if (!isLoggedIn) {
+            e.preventDefault();
+            const msg = document.getElementById('loginAlert');
+            if (msg) {
+                msg.classList.remove('d-none');
+                setTimeout(function() {
+                    msg.classList.add('d-none');
+                }, 3000);
+            }
+        }
+        else if (isDoctor) {
+            e.preventDefault(); // stop navigation
+            alert("You must log in as a patient to book an appointment.");
+        }
+    }
+</script>
+
+<div class="video-section">
+    <video autoplay muted loop playsinline class="video-bg">
+        <source src="@Url.Content("~/videos/AppointmentSystem.mp4")" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+    <div class="content">
+        <h1>Your Appointments. Redefined.</h1>
+        <p>Book faster. Manage smarter.</p>
+
+        <!-- Inline alert for not logged in -->
+        <small id="loginAlert" class="login-alert d-none mb-2">
+            You must log in before booking an appointment.
+        </small>
+
+        <a href="/Home/BookNowAccess" class="btn" onclick="checkLogin(event)">
+            Book Now
+        </a>
+    </div>
+</div>

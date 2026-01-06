@@ -1,0 +1,325 @@
+﻿@model DoctorAppointmentSystem.ViewModels.PatientAppointmentViewModel
+@{
+    Layout = "~/Views/Shared/_PatientSidebar.cshtml";
+    ViewData["Title"] = "My Appointments";
+}
+
+<link rel="stylesheet" href="~/css/PatientAppointments.css" />
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i> Book New Appointment
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <input type="text" id="appointmentSearchInput" class="form-control" placeholder="Search by doctor, date, or notes...">
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="appointmentTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @(Model.Filter == "upcoming" ? "active" : "")"
+                            id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming"
+                            type="button" role="tab" onclick="setFilter('upcoming')">
+                        <i class="fas fa-calendar-check me-1"></i> Today
+                        <span class="badge bg-primary ms-1">@Model.UpcomingAppointments.Count</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @(Model.Filter == "past" ? "active" : "")"
+                            id="past-tab" data-bs-toggle="tab" data-bs-target="#past"
+                            type="button" role="tab" onclick="setFilter('past')">
+                        <i class="fas fa-history me-1"></i> History
+                        <span class="badge bg-secondary ms-1">@Model.PastAppointments.Count</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @(Model.Filter == "all" ? "active" : "")"
+                            id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
+                            type="button" role="tab" onclick="setFilter('all')">
+                        <i class="fas fa-list me-1"></i> All Appointments
+                        <span class="badge bg-info ms-1">@Model.AllAppointments.Count</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="appointmentTabContent">
+                <!-- Upcoming Tab -->
+                <div class="tab-pane fade @(Model.Filter == "upcoming" ? "show active" : "")" id="upcoming" role="tabpanel">
+                    @if (Model.UpcomingAppointments.Any())
+                    {
+                        var isFirstUpcoming = true;
+                        foreach (var appointment in Model.UpcomingAppointments)
+                        {
+                            <div class="card mb-3 appointment-card @GetCardClassForStatus(appointment.Status)" data-appointment-date="@appointment.AppointmentDate.ToString("o")">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h5 class="card-title">Dr. @appointment.Doctor?.Name</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">@appointment.Doctor?.Specialty</h6>
+                                            <p class="card-text">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                @appointment.AppointmentDate.ToString("dddd, MMMM dd, yyyy hh:mm tt")
+                                                <br>
+                                                <i class="fas fa-hourglass-half me-1"></i>
+                                                Duration: @appointment.Duration minutes
+                                                <br>
+                                                <i class="fas fa-stethoscope me-1"></i>
+                                                @(!string.IsNullOrEmpty(appointment.Notes) ? appointment.Notes : "No additional notes")
+                                            </p>
+                                            @if (isFirstUpcoming)
+                                            {
+                                                <div id="countdown-timer" class="mt-3"></div>
+                                                isFirstUpcoming = false;
+                                            }
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <span class="badge @GetStatusBadgeClass(appointment.Status) mb-2">
+                                                @appointment.Status
+                                            </span>
+                                            <div class="btn-group">
+                                                <button class="btn btn-outline-info btn-sm"
+                                                        onclick="viewAppointment(@appointment.Id)">
+                                                    <i class="fas fa-eye"></i> Details
+                                                </button>
+                                                @if (appointment.Status != "Cancelled" && appointment.AppointmentDate >= DateTime.Today)
+                                                {
+                                                    <button class="btn btn-outline-danger btn-sm"
+                                                            onclick="cancelAppointment(@appointment.Id)">
+                                                        <i class="fas fa-times"></i> Cancel
+                                                    </button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No upcoming appointments</h5>
+                            <p class="text-muted">You don't have any scheduled appointments.</p>
+<a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+    <i class="fas fa-plus me-1"></i> Book Your First Appointment
+</a>
+                        </div>
+                    }
+                </div>
+
+                <!-- Past Tab -->
+                <div class="tab-pane fade @(Model.Filter == "past" ? "show active" : "")" id="past" role="tabpanel">
+                    @if (Model.PastAppointments.Any())
+                    {
+                        foreach (var appointment in Model.PastAppointments)
+                        {
+                            <div class="card mb-3 appointment-card @GetCardClassForStatus(appointment.Status)">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h5 class="card-title">Dr. @appointment.Doctor?.Name</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">@appointment.Doctor?.Specialty</h6>
+                                            <p class="card-text">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                @appointment.AppointmentDate.ToString("dddd, MMMM dd, yyyy hh:mm tt")
+                                                <br>
+                                                <i class="fas fa-hourglass-half me-1"></i>
+                                                Duration: @appointment.Duration minutes
+                                                <br>
+                                                <i class="fas fa-stethoscope me-1"></i>
+                                                @(!string.IsNullOrEmpty(appointment.Notes) ? appointment.Notes : "No additional notes")
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <span class="badge @GetStatusBadgeClass(appointment.Status) mb-2">
+                                                @appointment.Status
+                                            </span>
+                                            <div class="btn-group">
+                                                <button class="btn btn-outline-info btn-sm"
+                                                        onclick="viewAppointment(@appointment.Id)">
+                                                    <i class="fas fa-eye"></i> Details
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No past appointments</h5>
+                            <p class="text-muted">You don't have any previous appointments.</p>
+                        </div>
+                    }
+                </div>
+
+                <!-- All Tab -->
+                <div class="tab-pane fade @(Model.Filter == "all" ? "show active" : "")" id="all" role="tabpanel">
+                    @if (Model.AllAppointments.Any())
+                    {
+                        foreach (var appointment in Model.AllAppointments)
+                        {
+                            <div class="card mb-3 appointment-card @GetCardClassForStatus(appointment.Status)">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h5 class="card-title">Dr. @appointment.Doctor?.Name</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">@appointment.Doctor?.Specialty</h6>
+                                            <p class="card-text">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                @appointment.AppointmentDate.ToString("dddd, MMMM dd, yyyy hh:mm tt")
+                                                <br>
+                                                <i class="fas fa-hourglass-half me-1"></i>
+                                                Duration: @appointment.Duration minutes
+                                                <br>
+                                                <i class="fas fa-stethoscope me-1"></i>
+                                                @(!string.IsNullOrEmpty(appointment.Notes) ? appointment.Notes : "No additional notes")
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <span class="badge @GetStatusBadgeClass(appointment.Status) mb-2">
+                                                @appointment.Status
+                                            </span>
+                                            <div class="btn-group">
+                                                <button class="btn btn-outline-info btn-sm"
+                                                        onclick="viewAppointment(@appointment.Id)">
+                                                    <i class="fas fa-eye"></i> Details
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No appointments found</h5>
+                            <p class="text-muted">You don’t have any appointments yet.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Appointment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="appointmentDetails"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/PatientAppoinment.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Live Search Filter ---
+            const searchInput = document.getElementById('appointmentSearchInput');
+            searchInput.addEventListener('input', function () {
+                const searchTerm = searchInput.value.toLowerCase();
+                const activeTabPane = document.querySelector('.tab-pane.active');
+                if (!activeTabPane) return;
+                const appointmentCards = activeTabPane.querySelectorAll('.appointment-card');
+                appointmentCards.forEach(card => {
+                    const cardText = card.textContent.toLowerCase();
+                    if (cardText.includes(searchTerm)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // --- Countdown Timer (first upcoming appointment only) ---
+            const firstUpcomingCard = document.querySelector('#upcoming .appointment-card');
+            const countdownElement = document.getElementById('countdown-timer');
+
+            if (firstUpcomingCard && countdownElement) {
+                const appointmentDateStr = firstUpcomingCard.getAttribute('data-appointment-date');
+                const appointmentDate = new Date(appointmentDateStr);
+
+                const updateCountdown = () => {
+                    const now = new Date();
+                    const diff = appointmentDate - now;
+
+                    if (diff <= 0) {
+                        countdownElement.innerHTML = '<span class="badge bg-success">This appointment is happening now or has passed.</span>';
+                        clearInterval(countdownInterval);
+                        return;
+                    }
+
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    countdownElement.innerHTML = `
+                        <strong class="text-primary">
+                            Starts in: ${days}d ${hours}h ${minutes}m ${seconds}s
+                        </strong>`;
+                };
+
+                const countdownInterval = setInterval(updateCountdown, 1000);
+                updateCountdown();
+            }
+        });
+    </script>
+}
+
+@functions {
+    public string GetStatusBadgeClass(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "confirmed" => "badge-confirmed",
+            "completed" => "badge-completed",
+            "cancelled" => "badge-cancelled",
+            "pending" => "badge-pending",
+            _ => "badge bg-secondary"
+        };
+    }
+
+    public string GetCardClassForStatus(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "confirmed" => "card-status-confirmed",
+            "completed" => "card-status-completed",
+            "cancelled" => "card-status-cancelled",
+            _ => ""
+        };
+    }
+}

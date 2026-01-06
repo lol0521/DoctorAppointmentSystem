@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+    var patient = ViewBag.Patient as DoctorAppointmentSystem.Models.Patient;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Appointment - Step 3</title>
+    <link rel="stylesheet" href="~/css/appointment.css" asp-append-version="true">
+</head>
+<body>
+    <div class="appointment-container">
+        <div class="progress-bar">
+            <div class="progress-step completed" data-title="Select Doctor" data-step="1"></div>
+            <div class="progress-step completed" data-title="Patient Details" data-step="2"></div>
+            <div class="progress-step active" data-title="Confirmation" data-step="3"></div>
+        </div>
+
+        <h1>Confirmation</h1>
+
+        <p>Your appointment has been submitted. We will contact you soon!</p>
+
+        <ul>
+            <li><strong>Name:</strong> @patient?.Name</li>
+            <li><strong>Date of Birth:</strong> @patient?.DateOfBirth.ToString("yyyy-MM-dd")</li>
+            <li><strong>Contact:</strong> @patient?.PhoneNumber</li>
+            <li><strong>Email:</strong> @patient?.Email</li>
+        </ul>
+
+        <form asp-controller="Payment" asp-action="Index" method="get">
+            <input type="hidden" name="appointmentId" value="@TempData["AppointmentId"]" />
+            <input type="hidden" name="amount" value="50.00" />
+            <div class="form-actions">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-success">Finish</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

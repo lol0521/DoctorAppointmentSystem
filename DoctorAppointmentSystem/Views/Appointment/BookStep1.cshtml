@@ -1,0 +1,155 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Appointment - Step 1</title>
+    <link rel="stylesheet" href="~/css/appointment.css" asp-append-version="true">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="appointment-container">
+        <div class="progress-bar">
+            <div class="progress-step active" data-title="Select Doctor" data-step="1"></div>
+            <div class="progress-step" data-title="Patient Details" data-step="2"></div>
+            <div class="progress-step" data-title="Confirmation" data-step="3"></div>
+        </div>
+
+        <h1>Select Doctor & Time</h1>
+
+        <form id="step1Form" method="post" asp-controller="Appointment" asp-action="Step1Next">
+            <div class="form-group">
+                <label class="required-field">Preferred Specialty</label>
+                <select id="specialtySelect" name="specialty" required>
+                    <option value="">Select Specialty</option>
+                    @foreach (var specialty in ViewBag.Specialties as List<string>)
+                    {
+                        <option value="@specialty">@specialty</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="required-field">Preferred Doctor</label>
+                <select id="doctorSelect" name="doctor" required>
+                    <option value="">Select Doctor</option>
+                </select>
+            </div>
+
+            <!-- Duration moved ABOVE Preferred Time -->
+            <div class="form-group">
+                <label>Duration</label>
+                <select id="durationSelect" name="duration">
+                    <option value="30">30 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="90">1.5 hours</option>
+                </select>
+                <small class="form-text text-muted">
+                    If you select more than 30 minutes, system will automatically block continuous slots if available.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label class="required-field">Select Appointment Date</label>
+                <input type="date" id="appointmentDate" name="appointmentDate"
+                       min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+            </div>
+
+            <!-- Preferred Time Slot -->
+            <div class="form-group">
+                <label class="required-field">Preferred Time</label>
+                <select id="timeSlotSelect" name="timeSlot" required>
+                    <option value="">Select Time Slot</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Medical Concern (optional)</label>
+                <textarea name="concern"></textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Next</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            let formSubmitted = false;
+
+            function loadTimeSlots() {
+                const doctorId = $('#doctorSelect').val();
+                const duration = $('#durationSelect').val();
+
+                if (!doctorId) {
+                    $('#timeSlotSelect').html('<option value="">Select a doctor first</option>');
+                    return;
+                }
+
+        $.get('/Appointment/GetAvailableSlots',
+            { doctorId: doctorId, date: $('#appointmentDate').val(), duration: duration },
+            function (data) {
+                const $timeSlotSelect = $('#timeSlotSelect');
+                    $timeSlotSelect.empty().append('<option value="">Select Time Slot</option>');
+                    if (data.length === 0) {
+                        $timeSlotSelect.append('<option disabled>No slots available</option>');
+                    } else {
+                        $.each(data, function (i, slot) {
+                            $timeSlotSelect.append(`<option value="${slot}">${slot}</option>`);
+                        });
+                    }
+                });
+            }
+
+            $('#doctorSelect').change(loadTimeSlots);
+            $('#durationSelect').change(loadTimeSlots);
+            $('#appointmentDate').change(loadTimeSlots);
+
+            $('#step1Form').on('submit', function () {
+                formSubmitted = true;
+            });
+
+            window.addEventListener('beforeunload', function (e) {
+                if (!formSubmitted) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+
+            window.addEventListener('popstate', function (e) {
+                if (!formSubmitted) {
+                    const confirmLeave = confirm("Are you sure you want to leave? Your entered data will be lost.");
+                    if (confirmLeave) {
+                        window.location.href = '/Home/Index';
+                    } else {
+                        history.pushState(null, '', window.location.href);
+                    }s
+                }
+            });
+
+        $('#specialtySelect').change(function () {
+            var specialty = $(this).val();
+
+            // Reset doctor and time slot
+            $('#doctorSelect').html('<option value="">Select Doctor</option>');
+            $('#timeSlotSelect').html('<option value="">Select Time Slot</option>');
+
+            if (specialty) {
+                $.get('/Appointment/GetDoctorsBySpecialty', { specialty: specialty }, function (data) {
+                    $.each(data, function (i, doctor) {
+                        $('#doctorSelect').append(
+                            $('<option>', { value: doctor.id, text: doctor.name }) // Ensure correct casing
+                        );
+                    });
+                });
+            }
+        });
+
+            history.pushState(null, '', window.location.href);
+        });
+    </script>
+</body>
+</html>

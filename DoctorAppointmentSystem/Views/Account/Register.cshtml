@@ -1,0 +1,260 @@
+﻿@model DoctorAppointmentSystem.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Account/_LayoutAccount.cshtml";
+}
+
+<div class="row justify-content-center my-5">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header text-center py-4">
+                <h3 class="mb-0">Create Account</h3>
+            </div>
+            <div class="card-body p-5">
+                <form asp-action="Register" method="post" enctype="multipart/form-data" id="registerForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Username + Email -->
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label asp-for="Username" class="form-label fw-semibold"></label>
+                            <input asp-for="Username" class="form-control" placeholder="Choose a username"
+                                   onblur="checkUsernameAvailability()" id="usernameInput" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                            <div id="usernameAvailability" class="small"></div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label fw-semibold"></label>
+                            <input asp-for="Email" class="form-control" placeholder="Enter your email"
+                                   onblur="checkEmailAvailability()" id="emailInput" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <div id="emailAvailability" class="small"></div>
+                        </div>
+                    </div>
+
+                    <!-- Password + Confirm -->
+                    <div class="row g-4 mt-2">
+                        <div class="col-md-6 password-wrapper">
+                            <label asp-for="Password" class="form-label fw-semibold"></label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Create a password" />
+                            <button type="button" class="password-toggle"><i class="fas fa-eye"></i></button>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <small class="form-text text-muted">
+                                Password must contain:
+                                <ul class="mb-0 ps-3">
+                                    <li id="length-req" class="text-danger">At least 6 characters</li>
+                                    <li id="upper-req" class="text-danger">One uppercase letter</li>
+                                    <li id="lower-req" class="text-danger">One lowercase letter</li>
+                                    <li id="number-req" class="text-danger">One number</li>
+                                    <li id="special-req" class="text-danger">One special character</li>
+                                </ul>
+                            </small>
+                        </div>
+                        <div class="col-md-6 password-wrapper">
+                            <label asp-for="ConfirmPassword" class="form-label fw-semibold"></label>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm your password" />
+                            <button type="button" class="password-toggle"><i class="fas fa-eye"></i></button>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Name -->
+                    <div class="form-group mb-4 mt-3">
+                        <label asp-for="Name" class="form-label fw-semibold"></label>
+                        <input asp-for="Name" class="form-control" placeholder="Enter your full name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- Phone + Gender -->
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label asp-for="PhoneNumber" class="form-label fw-semibold"></label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number"
+                                   onblur="checkPhoneAvailability()" id="phoneInput" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            <div id="phoneAvailability" class="small"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Gender" class="form-label fw-semibold"></label>
+                            <select asp-for="Gender" class="form-select">
+                                <option value="">-- Select Gender --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- DOB -->
+                    <div class="form-group mb-4 mt-3">
+                        <label asp-for="DateOfBirth" class="form-label fw-semibold"></label>
+                        <input asp-for="DateOfBirth" type="date" class="form-control" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+
+                    <!-- Address with map -->
+                    <div class="form-group mb-4">
+                        <label asp-for="Address" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <input asp-for="Address" class="form-control" id="addressInput" autocomplete="off" placeholder="Type your address" />
+                            <button type="button" id="useFullAddressBtn" class="btn btn-outline-primary">Use Full Address</button>
+                        </div>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-4">
+                        <div id="map" style="height: 300px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);"></div>
+                    </div>
+
+                    <!-- Profile Image -->
+                    <div class="form-group mb-4">
+                        <label asp-for="ProfileImage" class="form-label fw-semibold"></label>
+                        <input asp-for="ProfileImage" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                        <small class="form-text text-muted">Supported formats: JPG, PNG, GIF. Max size: 2MB</small>
+                    </div>
+
+                    <!-- Doctor checkbox + Specialty -->
+                    <div class="form-check mb-4">
+                        <input asp-for="RegisterAsDoctor" class="form-check-input" id="registerAsDoctor" />
+                        <label asp-for="RegisterAsDoctor" class="form-check-label ms-2 fw-semibold">I want to register as a Doctor</label>
+                    </div>
+
+                    <div class="form-group mb-4" id="specialtyField" style="display:none;">
+                        <label asp-for="Specialty" class="form-label fw-semibold"></label>
+                        <select asp-for="Specialty" class="form-select" id="specialtySelect">
+                            <option value="">Select Specialty</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="Emergency Medicine">Emergency Medicine</option>
+                            <option value="Family Medicine">Family Medicine</option>
+                            <option value="Internal Medicine">Internal Medicine</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Obstetrics and Gynecology">Obstetrics and Gynecology</option>
+                            <option value="Ophthalmology">Ophthalmology</option>
+                            <option value="Orthopedics">Orthopedics</option>
+                            <option value="Pediatrics">Pediatrics</option>
+                            <option value="Psychiatry">Psychiatry</option>
+                            <option value="Surgery">Surgery</option>
+                            <option value="Urology">Urology</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Specialty" class="text-danger"></span>
+                        <div id="otherSpecialtyField" style="display:none; margin-top:10px;">
+                            <input type="text" class="form-control" placeholder="Please specify your specialty" />
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="form-group mb-4">
+                        <button type="submit" class="btn btn-primary w-100 py-2">Register</button>
+                    </div>
+                    <div class="text-center mt-3">
+                        <p class="mb-0">Already have an account? <a asp-action="Login" class="text-decoration-none">Login here</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_PasswordToggleScripts")
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('addressInput');
+            const useBtn = document.getElementById('useFullAddressBtn');
+
+            // Leaflet map
+            const map = L.map('map', { scrollWheelZoom: false }).setView([20, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            let marker = null;
+            function setMarker(lat, lon) {
+                if (marker) map.removeLayer(marker);
+                marker = L.marker([lat, lon]).addTo(map);
+                map.setView([lat, lon], 15, { animate: true });
+            }
+
+            // Load saved address if exists
+            const initialAddress = '@(Model?.Address ?? "")'.replace(/'/g, "\\'");
+            if (initialAddress) {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(initialAddress)}`)
+                    .then(r => r.json()).then(arr => {
+                        if (arr && arr[0]) {
+                            setMarker(arr[0].lat, arr[0].lon);
+                            input.dataset.formatted = arr[0].display_name;
+                        }
+                    });
+            }
+
+            // Auto-update map when typing
+            let timer = null;
+            input.addEventListener('input', function () {
+                const q = this.value.trim();
+                delete input.dataset.formatted;
+                if (timer) clearTimeout(timer);
+                if (!q) return;
+
+                timer = setTimeout(() => {
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(q)}`)
+                        .then(r => r.json()).then(arr => {
+                            if (arr && arr[0]) {
+                                input.dataset.formatted = arr[0].display_name;
+                                setMarker(arr[0].lat, arr[0].lon);
+                            }
+                        });
+                }, 800);
+            });
+
+            // Use Full Address button
+            useBtn.addEventListener('click', function () {
+                if (input.dataset.formatted) {
+                    input.value = input.dataset.formatted;
+                }
+            });
+
+            // Specialty toggle
+            const registerAsDoctorCheckbox = document.getElementById('registerAsDoctor');
+            const specialtyField = document.getElementById('specialtyField');
+            const specialtySelect = document.getElementById('specialtySelect');
+            const otherSpecialtyField = document.getElementById('otherSpecialtyField');
+            const otherSpecialtyInput = otherSpecialtyField.querySelector('input');
+
+            registerAsDoctorCheckbox.addEventListener('change', function () {
+                specialtyField.style.display = this.checked ? 'block' : 'none';
+                if (!this.checked) {
+                    specialtySelect.value = '';
+                    otherSpecialtyField.style.display = 'none';
+                    otherSpecialtyInput.value = '';
+                }
+            });
+
+            specialtySelect.addEventListener('change', function () {
+                otherSpecialtyField.style.display = this.value === 'Other' ? 'block' : 'none';
+                if (this.value !== 'Other') otherSpecialtyInput.value = '';
+            });
+
+            document.getElementById('registerForm').addEventListener('submit', function (e) {
+                if (specialtySelect.value === 'Other' && otherSpecialtyInput.value.trim() !== '') {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'Specialty';
+                    hiddenInput.value = otherSpecialtyInput.value.trim();
+                    this.appendChild(hiddenInput);
+                    specialtySelect.disabled = true;
+                }
+            });
+        });
+    </script>
+}

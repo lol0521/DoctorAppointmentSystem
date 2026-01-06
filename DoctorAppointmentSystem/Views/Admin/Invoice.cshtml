@@ -1,0 +1,131 @@
+﻿@model DoctorAppointmentSystem.ViewModels.PaymentInvoiceViewModel
+
+@{
+    ViewData["Title"] = "Payment Invoice";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-receipt"></i> Payment Invoice
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Invoice Header -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>@Model.ClinicName</h5>
+                            <p class="mb-1">@Model.ClinicAddress</p>
+                            <p class="mb-1">@Model.ClinicCity</p>
+                            <p class="mb-1">Phone: @Model.ClinicPhone</p>
+                            <p class="mb-0">Email: @Model.ClinicEmail</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <h5>INVOICE</h5>
+                            <p class="mb-1"><strong>Invoice #:</strong> @Model.TransactionId</p>
+                            <p class="mb-1"><strong>Date:</strong> @Model.FormattedPaymentDate</p>
+                            <p class="mb-1">
+                                <strong>Status:</strong>
+                                <span class="badge @(Model.Status == "Paid" ? "bg-success" : "bg-warning")">
+                                    @Model.Status
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Bill To / Appointment Details -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6>Bill To:</h6>
+                            <p class="mb-1"><strong>@Model.PatientName</strong></p>
+                            <p class="mb-1">Email: @Model.PatientEmail</p>
+                            <p class="mb-0">Phone: @Model.PatientPhone</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Appointment Details:</h6>
+                            <p class="mb-1"><strong>Doctor:</strong> Dr. @Model.DoctorName</p>
+                            <p class="mb-1"><strong>Specialty:</strong> @Model.DoctorSpecialty</p>
+                            <p class="mb-1"><strong>Date & Time:</strong> @Model.FormattedAppointmentDate</p>
+                            <p class="mb-0"><strong>Appointment ID:</strong> AP-@Model.AppointmentId.ToString("D4")</p>
+                        </div>
+                    </div>
+
+                    <!-- Payment Details -->
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Description</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Medical Consultation</strong><br>
+                                        <small>Dr. @Model.DoctorName - @Model.DoctorSpecialty</small><br>
+                                        <small>Appointment on @Model.FormattedAppointmentDate</small>
+                                        @if (!string.IsNullOrEmpty(Model.AppointmentNotes))
+                                        {
+                                            <br>
+                                            <small><strong>Notes:</strong> @Model.AppointmentNotes</small>
+                                        }
+                                    </td>
+                                    <td class="text-end">@Model.FormattedAmount</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-end"><strong>Total Amount:</strong></td>
+                                    <td class="text-end"><strong>@Model.FormattedAmount</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6>Payment Information:</h6>
+                            <p class="mb-1"><strong>Payment Method:</strong> @Model.PaymentMethod</p>
+                            <p class="mb-1"><strong>Payment Date:</strong> @Model.FormattedPaymentDate</p>
+                            <p class="mb-0"><strong>Transaction ID:</strong> @Model.TransactionId</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Doctor Information:</h6>
+                            <p class="mb-1"><strong>Dr. @Model.DoctorName</strong></p>
+                            <p class="mb-1">@Model.DoctorSpecialty</p>
+                            <p class="mb-1">Phone: @Model.DoctorPhone</p>
+                            <p class="mb-0">Email: @Model.DoctorEmail</p>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Notes -->
+                    <div class="alert alert-info">
+                        <h6><i class="bi bi-info-circle"></i> Payment Terms & Notes:</h6>
+                        <ul class="mb-0">
+                            <li>This invoice represents payment for medical services rendered</li>
+                            <li>Payment is due upon receipt of this invoice</li>
+                            <li>For questions regarding this invoice, please contact our billing department</li>
+                            <li>Thank you for choosing @Model.ClinicName for your healthcare needs</li>
+                        </ul>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2 mt-4">
+                        <a asp-action="Payments" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Payments
+                        </a>                       
+                        <button onclick="window.print()" class="btn btn-primary">
+                            <i class="bi bi-download"></i> Download PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
